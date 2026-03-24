@@ -17,6 +17,9 @@ void main() {
       final minLength = min(word1.length, word2.length);
 
       for (var j = 0; j < minLength; j++) {
+        if (j == minLength - 1 && word1.length > word2.length) {
+          return "";
+        }
         if (word1[j] != word2[j]) {
           if (!(edges[word1[j]]!.contains(word2[j]))) {
             edges[word1[j]]!.add(word2[j]);
