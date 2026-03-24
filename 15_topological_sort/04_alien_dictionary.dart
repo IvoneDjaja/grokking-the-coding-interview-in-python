@@ -1,38 +1,55 @@
+import 'dart:math';
+
 void main() {
   String alienDictionary(List<String> words) {
-    var resultList = [];
+    final inDegreeMap = <String, int>{};
+    final edges = <String, List<String>>{};
+    for (final word in words) {
+      for (var i = 0; i < word.length; i++) {
+        inDegreeMap[word[i]] = 0;
+        edges[word[i]] = [];
+      }
+    }
 
     for (var i = 0; i < words.length - 1; i++) {
       final word1 = words[i];
       final word2 = words[i + 1];
-      var index1 = 0;
-      var index2 = 0;
-      while (word1[index1] == word2[index2]) {
-        index1 += 1;
-        index2 += 1;
-      }
-      if (resultList.contains(word1[index1]) &&
-          resultList.contains(word2[index2])) {
-        if (resultList.indexOf(word2[index2]) <
-            resultList.indexOf(word1[index1])) {
-          resultList.clear();
+      final minLength = min(word1.length, word2.length);
+
+      for (var j = 0; j < minLength; j++) {
+        if (word1[j] != word2[j]) {
+          if (!(edges[word1[j]]!.contains(word2[j]))) {
+            edges[word1[j]]!.add(word2[j]);
+            inDegreeMap[word2[j]] = (inDegreeMap[word2[j]] ?? 0) + 1;
+          }
           break;
         }
       }
-      if (index1 < word1.length && index2 < word2.length) {
-        if (resultList.contains(word2[index2]) &&
-            !resultList.contains(word1[index1])) {
-          resultList.remove(word2[index2]);
-        }
-      }
-      if (!resultList.contains(word1[index1])) {
-        resultList.add(word1[index1]);
-      }
-      if (!resultList.contains(word2[index2])) {
-        resultList.add(word2[index2]);
+    }
+
+    final queue = <String>[];
+    final result = <String>[];
+    for (final key in inDegreeMap.keys) {
+      if (inDegreeMap[key] == 0) {
+        queue.add(key);
       }
     }
-    return resultList.join('');
+
+    while (queue.isNotEmpty) {
+      final char = queue.removeAt(0);
+      result.add(char);
+      for (final edge in edges[char]!) {
+        inDegreeMap[edge] = (inDegreeMap[edge] ?? 0) - 1;
+        if (inDegreeMap[edge] == 0) {
+          queue.add(edge);
+        }
+      }
+    }
+
+    if (result.length != inDegreeMap.keys.length) {
+      return "";
+    }
+    return result.join("");
   }
 
   print('CASE 1');
@@ -54,4 +71,20 @@ void main() {
   print('CASE 5');
   final words5 = ['m', 'a', 'b', 's'];
   print(alienDictionary(words5));
+
+  print('CASE 6');
+  final words6 = [
+    "m",
+    "mx",
+    "mxe",
+    "mxer",
+    "mxerl",
+    "mxerlo",
+    "mxerlos",
+    "mxerlost",
+    "mxerlostr",
+    "mxerlostrpq",
+    "mxerlostrp",
+  ];
+  print(alienDictionary(words6));
 }
