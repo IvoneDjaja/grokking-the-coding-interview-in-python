@@ -7,25 +7,19 @@ class ListNode {
 
 void main() {
   ListNode? removeNthLastNode(ListNode? head, int n) {
-    if (head == null) {
-      return null;
-    } else if (n == 1) {
-      return head.next;
-    }
+    final dummy = ListNode(val: 0, next: head);
+    ListNode? slowPointer = dummy;
+    ListNode? fastPointer = head;
 
-    ListNode? slowPointer = head;
-    ListNode? fastPointer = head.next;
-
-    var index = 0;
-    while (fastPointer != null && index < n - 2) {
-      slowPointer = slowPointer?.next;
-      fastPointer = fastPointer.next;
-      index += 1;
+    for (var index = 0; index < n; index++) {
+      fastPointer = fastPointer?.next;
     }
-    if (slowPointer?.next != null) {
-      slowPointer!.next = fastPointer?.next;
+    if (fastPointer?.next != null) {
+      slowPointer = slowPointer.next;
+      fastPointer = fastPointer?.next;
     }
-    return head;
+    slowPointer?.next = slowPointer.next?.next;
+    return dummy.next;
   }
 
   // CASE 1
@@ -35,9 +29,9 @@ void main() {
   final node2 = ListNode(val: 13, next: node3);
   final node1 = ListNode(val: 11, next: node2);
   final head = removeNthLastNode(node1, 3);
-  print(head?.val);
-  print(head?.next?.val);
-  print(head?.next?.next?.val);
-  print(head?.next?.next?.next?.val);
-  print(head?.next?.next?.next?.next?.val);
+  var current = head;
+  while (current != null) {
+    print(current.val);
+    current = current.next;
+  }
 }
