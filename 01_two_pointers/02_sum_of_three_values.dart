@@ -15,8 +15,14 @@ void main() {
         final twoSum = number2 + number3;
         if (twoSum == -number1) {
           output.add([number1, number2, number3]);
-          twoSumStartIndex += 1;
-          twoSumEndIndex -= 1;
+          while (twoSumStartIndex < twoSumEndIndex &&
+              numbers[twoSumStartIndex] == number2) {
+            twoSumStartIndex += 1;
+          }
+          while (twoSumStartIndex < twoSumEndIndex &&
+              numbers[twoSumEndIndex] == number3) {
+            twoSumEndIndex -= 1;
+          }
         } else if (twoSum < -number1) {
           twoSumStartIndex += 1;
         } else {
@@ -24,15 +30,7 @@ void main() {
         }
       }
 
-      if (number1 == number2) {
-        var prev = numbers[index];
-        var next = numbers[index + 1];
-        while (prev == next && index < numbers.length - 2) {
-          prev = numbers[index];
-          next = numbers[index + 1];
-          index += 1;
-        }
-      } else {
+      while (index < numbers.length - 2 && numbers[index] == number1) {
         index += 1;
       }
     }
