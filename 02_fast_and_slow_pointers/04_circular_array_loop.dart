@@ -1,29 +1,47 @@
 void main() {
   bool findCycle(List<int> nums, int index) {
-    int findIndex(int index) {
+    int getNext(int index) {
       return (index + nums[index]) % nums.length;
+    }
+
+    bool isValidStep(isForward, index) {
+      if (isForward && nums[index] <= 0) {
+        return false;
+      }
+      if (!isForward && nums[index] >= 0) {
+        return false;
+      }
+      return true;
     }
 
     var slow = index;
     var fast = index;
-    fast = findIndex(fast);
-    var sum = 0;
+    var isForward = nums[slow] > 0;
 
-    while (slow != fast) {
-      sum += nums[slow];
-      slow = findIndex(slow);
-      fast = findIndex(findIndex(fast));
-      if (sum >= 0 && nums[slow] < 0) {
-        return false;
+    while (true) {
+      final nextSlow = getNext(slow);
+      if (!isValidStep(isForward, nextSlow)) {
+        break;
       }
-      if (sum <= 0 && nums[slow] > 0) {
-        return false;
+      slow = nextSlow;
+
+      final nextFast = getNext(fast);
+      if (!isValidStep(isForward, nextFast)) {
+        break;
       }
+      final nextNextFast = getNext(nextFast);
+      if (!isValidStep(isForward, nextNextFast)) {
+        break;
+      }
+      fast = nextNextFast;
+
       if (slow == fast) {
-        if (slow != findIndex(slow)) return true;
+        if (slow == getNext(slow)) {
+          break;
+        }
+        return true;
       }
     }
-
     return false;
   }
 
