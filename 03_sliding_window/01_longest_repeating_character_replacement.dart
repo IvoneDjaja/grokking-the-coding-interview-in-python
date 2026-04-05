@@ -5,28 +5,22 @@ void main() {
     final countSet = <String, int>{};
 
     var startIndex = 0;
-    var endIndex = 0;
+    var maxCount = 0;
     var maxSubstringLength = 0;
 
-    for (final letter in s) {
-      countSet[letter] = 0;
-    }
+    for (var endIndex = 0; endIndex < s.length; endIndex++) {
+      final letter = s[endIndex];
+      countSet[letter] = (countSet[letter] ?? 0) + 1;
 
-    while (endIndex < s.length) {
-      countSet[s[endIndex]] = (countSet[s[endIndex]] ?? 0) + 1;
-      if (s[startIndex] == s[endIndex]) {
-        endIndex += 1;
-        maxSubstringLength = max(maxSubstringLength, endIndex - startIndex);
-      } else if (endIndex - (countSet[s[startIndex]] ?? 0) < k) {
-        endIndex += 1;
-        maxSubstringLength = max(maxSubstringLength, endIndex - startIndex);
-      } else {
-        while (endIndex - startIndex > k) {
-          countSet[s[startIndex]] = (countSet[s[startIndex]] ?? 0) - 1;
-          startIndex += 1;
-        }
-        endIndex += 1;
+      maxCount = max(maxCount, countSet[letter]!);
+
+      while ((endIndex - startIndex + 1) - maxCount > k) {
+        final letter = s[startIndex];
+        countSet[letter] = countSet[letter]! - 1;
+        startIndex += 1;
       }
+
+      maxSubstringLength = max(maxSubstringLength, endIndex - startIndex + 1);
     }
 
     return maxSubstringLength;
