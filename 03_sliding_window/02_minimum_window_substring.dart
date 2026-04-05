@@ -1,28 +1,37 @@
 void main() {
   String minWindow(String s, String t) {
-    final sCount = <String, int>{};
-    final tCount = <String, int>{};
-
+    final countT = <String, int>{};
     for (var i = 0; i < t.length; i++) {
       final letter = t[i];
-      tCount[letter] = (tCount[letter] ?? 0) + 1;
+      countT[letter] = (countT[letter] ?? 0) + 1;
     }
 
-    var startIndex = 0;
-    for (var endIndex = 0; endIndex < s.length; endIndex++) {
-      final letter = s[endIndex];
-      sCount[letter] = (sCount[letter] ?? 0) + 1;
-      while (sCount[letter]! > (tCount[letter] ?? 0)) {
-        startIndex += 1;
-        final startLetter = s[startIndex];
-        sCount[startLetter] = (sCount[startLetter] ?? 0) - 1;
-      }
-      if (endIndex - startIndex + 1 == t.length) {
-        return s.substring(startIndex, endIndex + 1);
+    var resIndex = [-1, -1];
+    var resLength = double.maxFinite.toInt();
+    for (var i = 0; i < s.length; i++) {
+      final countS = <String, int>{};
+      for (var j = i; j < s.length; j++) {
+        final letter = s[j];
+        countS[letter] = 1 + (countS[letter] ?? 0);
+
+        var flag = true;
+        for (final tLetter in countT.keys) {
+          if (countT[tLetter]! > (countS[tLetter] ?? 0)) {
+            flag = false;
+            break;
+          }
+        }
+
+        if (flag && (j - i + 1) < resLength) {
+          resLength = j - i + 1;
+          resIndex = [i, j + 1];
+        }
       }
     }
 
-    return '';
+    return resLength != double.maxFinite.toInt()
+        ? s.substring(resIndex.first, resIndex.last)
+        : '';
   }
 
   // CASE 1
