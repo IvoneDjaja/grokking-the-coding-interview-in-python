@@ -1,31 +1,37 @@
 void main() {
   String minWindow(String s, String t) {
     final countT = <String, int>{};
+    final window = <String, int>{};
     for (var i = 0; i < t.length; i++) {
       final letter = t[i];
       countT[letter] = (countT[letter] ?? 0) + 1;
     }
 
+    var startIndex = 0;
     var resIndex = [-1, -1];
     var resLength = double.maxFinite.toInt();
-    for (var i = 0; i < s.length; i++) {
-      final countS = <String, int>{};
-      for (var j = i; j < s.length; j++) {
-        final letter = s[j];
-        countS[letter] = 1 + (countS[letter] ?? 0);
+    var count = 0;
 
-        var flag = true;
-        for (final tLetter in countT.keys) {
-          if (countT[tLetter]! > (countS[tLetter] ?? 0)) {
-            flag = false;
-            break;
-          }
+    for (var endIndex = 0; endIndex < s.length; endIndex++) {
+      final letter = s[endIndex];
+      window[letter] = 1 + (window[letter] ?? 0);
+
+      if (countT.keys.contains(letter) && window[letter]! == countT[letter]!) {
+        count += 1;
+      }
+
+      while (count == countT.length) {
+        if (endIndex - startIndex + 1 < resLength) {
+          resIndex = [startIndex, endIndex + 1];
+          resLength = endIndex - startIndex + 1;
         }
 
-        if (flag && (j - i + 1) < resLength) {
-          resLength = j - i + 1;
-          resIndex = [i, j + 1];
+        window[s[startIndex]] = window[s[startIndex]]! - 1;
+        if (countT.keys.contains(s[startIndex]) &&
+            window[s[startIndex]]! < countT[s[startIndex]]!) {
+          count -= 1;
         }
+        startIndex += 1;
       }
     }
 
