@@ -3,21 +3,14 @@ import 'dart:math';
 void main() {
   List<List<int>> mergeIntervals(List<List<int>> intervals) {
     intervals..sort((a, b) => a.first < b.first ? -1 : 1);
-    final stack = <List<int>>[];
+    final stack = <List<int>>[intervals.first];
 
     for (var interval in intervals) {
-      if (stack.length == 0) {
-        stack.add(interval);
+      if (interval.first <= stack.last.last) {
+        final lastInterval = stack.last;
+        stack.last[1] = max(lastInterval.last, interval.last);
       } else {
-        if (interval.first <= stack.last.last) {
-          final lastInterval = stack.removeLast();
-          stack.add([
-            lastInterval.first,
-            max(lastInterval.last, interval.last),
-          ]);
-        } else {
-          stack.add(interval);
-        }
+        stack.add(interval);
       }
     }
     return stack;
