@@ -5,47 +5,29 @@ void main() {
     List<List<int>> existingIntervals,
     List<int> newInterval,
   ) {
-    int index = 0;
-    bool addInterval = false;
+    var index = 0;
+    var intervals = <List<int>>[];
 
-    while (index < existingIntervals.length) {
-      List<int> prevInterval = existingIntervals[index];
-
-      if (prevInterval[1] >= newInterval[0]) {
-        existingIntervals[index][1] = max(prevInterval[1], newInterval[1]);
-        addInterval = true;
-      } else if (index + 1 < existingIntervals.length) {
-        List<int> nextInterval = existingIntervals[index + 1];
-        if (newInterval[1] < nextInterval[0]) {
-          existingIntervals.insert(index + 1, newInterval);
-          index += 1;
-          addInterval = true;
-        }
-      }
-
-      while (addInterval && index + 1 < existingIntervals.length) {
-        if (existingIntervals[index][1] >= existingIntervals[index + 1][0]) {
-          existingIntervals[index][0] = min(
-            existingIntervals[index][0],
-            existingIntervals[index + 1][0],
-          );
-          existingIntervals[index][1] = max(
-            existingIntervals[index][1],
-            existingIntervals[index + 1][1],
-          );
-          existingIntervals.removeAt(index + 1);
-        } else {
-          index += 1;
-        }
-      }
+    while (index < existingIntervals.length &&
+        existingIntervals[index].last < newInterval.first) {
+      intervals.add(existingIntervals[index]);
       index += 1;
     }
 
-    if (!addInterval) {
-      existingIntervals.add(newInterval);
+    while (index < existingIntervals.length &&
+        existingIntervals[index].first <= newInterval.last) {
+      newInterval[0] = min(existingIntervals[index].first, newInterval.first);
+      newInterval[1] = max(existingIntervals[index].last, newInterval.last);
+      index += 1;
+    }
+    intervals.add(newInterval);
+
+    while (index < existingIntervals.length) {
+      intervals.add(existingIntervals[index]);
+      index += 1;
     }
 
-    return existingIntervals;
+    return intervals;
   }
 
   // CASE 1
