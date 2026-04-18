@@ -13,18 +13,21 @@ void main() {
     while (indexA < intervalListA.length && indexB < intervalListB.length) {
       final intervalA = intervalListA[indexA];
       final intervalB = intervalListB[indexB];
-      if ((intervalA.first >= intervalB.first &&
-              intervalA.first <= intervalB.last) ||
-          intervalB.first >= intervalA.first &&
-              intervalB.first <= intervalA.last) {
+
+      final maxStart = max(intervalA.first, intervalB.first);
+      final minEnd = max(intervalA.last, intervalB.last);
+      if (maxStart <= minEnd) {
         intersections.add([
           max(intervalA.first, intervalB.first),
           min(intervalA.last, intervalB.last),
         ]);
       }
-      if (intervalA.last > intervalB.last) {
+      if (intervalA.last < intervalB.last) {
+        indexA += 1;
+      } else if (intervalA.last > intervalB.last) {
         indexB += 1;
       } else {
+        indexA += 1;
         indexA += 1;
       }
     }
