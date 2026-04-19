@@ -33,9 +33,9 @@ void main() {
     slow?.next = null;
 
     ListNode? current = head;
-    while (current != null && secondHalf != null) {
-      final next1 = current.next;
-      current.next = secondHalf;
+    while (secondHalf != null) {
+      final next1 = current?.next;
+      current?.next = secondHalf;
       final next2 = secondHalf.next;
       secondHalf.next = next1;
       current = next1;
