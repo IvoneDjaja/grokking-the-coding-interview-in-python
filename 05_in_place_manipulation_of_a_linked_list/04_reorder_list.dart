@@ -30,14 +30,14 @@ void main() {
     }
 
     ListNode? secondHalf = reverse(slow?.next);
-    secondHalf = reverse(slow?.next);
+    slow?.next = null;
 
     ListNode? current = head;
-    while (current != null) {
+    while (current != null && secondHalf != null) {
       final next1 = current.next;
       current.next = secondHalf;
-      final next2 = secondHalf?.next;
-      secondHalf?.next = next1;
+      final next2 = secondHalf.next;
+      secondHalf.next = next1;
       current = next1;
       secondHalf = next2;
     }
