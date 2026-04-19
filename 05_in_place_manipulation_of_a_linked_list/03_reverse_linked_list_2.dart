@@ -42,7 +42,7 @@ void main() {
     groupPrev?.next = newStart;
     start?.next = groupNext;
 
-    return groupPrev?.next;
+    return dummy.next;
   }
 
   // CASE 1
