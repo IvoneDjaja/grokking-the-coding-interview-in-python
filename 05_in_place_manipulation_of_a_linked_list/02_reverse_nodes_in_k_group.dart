@@ -7,38 +7,32 @@ class ListNode {
 void main() {
   ListNode? reverseKGroups(ListNode head, int k) {
     final dummy = ListNode(val: -1, next: head);
+    ListNode? groupBefore = dummy;
 
-    ListNode? current = head;
-    ListNode? currentGroup = dummy;
-    ListNode? prev = null;
-    while (current?.next != null) {
-      var count = 0;
-      var startGroup = current;
-
-      var checkCount = 0;
-      ListNode? checkCurrent = current;
-      while (checkCurrent?.next != null && checkCount < k) {
-        checkCount += 1;
-        checkCurrent = checkCurrent?.next;
+    while (true) {
+      ListNode? kNode = groupBefore;
+      for (var i = 0; i < k && kNode != null; i++) {
+        kNode = kNode.next;
       }
 
-      if (checkCount == k) {
-        while (current?.next != null && count < k) {
-          final next = current?.next;
-          current?.next = prev;
-          prev = current;
-          current = next;
-          count += 1;
-        }
-        currentGroup?.next = prev;
-        currentGroup = startGroup;
-      } else {
-        currentGroup?.next = startGroup;
-
-        while (current?.next != null) {
-          current = current?.next;
-        }
+      if (kNode == null) {
+        break;
       }
+
+      ListNode? groupAfter = kNode.next;
+      ListNode? prev = groupAfter;
+      ListNode? current = groupBefore?.next;
+
+      for (var i = 0; i < k; i++) {
+        ListNode? next = current?.next;
+        current?.next = prev;
+        prev = current;
+        current = next;
+      }
+
+      ListNode? oldHead = groupBefore?.next;
+      groupBefore?.next = kNode;
+      groupBefore = oldHead;
     }
 
     return dummy.next;
