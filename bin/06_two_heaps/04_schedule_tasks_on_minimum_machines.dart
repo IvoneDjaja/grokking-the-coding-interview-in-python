@@ -3,18 +3,9 @@
 
 import 'package:collection/collection.dart';
 
+/// Retry: 1
 void main() {
   int minimumMachines(List<List<int>> tasks) {
-    final minEndHeap = HeapPriorityQueue<List<int>>((a, b) {
-      if (a.last < b.last) {
-        return -1;
-      } else if (a.last == b.last) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
-
     tasks.sort((a, b) {
       if (a.first < b.first) {
         return -1;
@@ -24,14 +15,24 @@ void main() {
         return 1;
       }
     });
+    final minEndHeap = HeapPriorityQueue<int>((a, b) {
+      if (a < b) {
+        return -1;
+      } else if (a == b) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
 
-    minEndHeap.add(tasks.first);
+    minEndHeap.add(tasks.first.last);
+
     for (var i = 1; i < tasks.length; i++) {
       final task = tasks[i];
-      if (minEndHeap.first.last <= task.first) {
+      if (minEndHeap.first <= task.first) {
         minEndHeap.removeFirst();
       }
-      minEndHeap.add(task);
+      minEndHeap.add(task.last);
     }
 
     return minEndHeap.length;
