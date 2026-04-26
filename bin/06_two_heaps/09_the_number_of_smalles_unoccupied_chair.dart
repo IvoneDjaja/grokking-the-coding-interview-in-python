@@ -1,51 +1,36 @@
-import 'package:collection/priority_queue.dart';
+import 'package:collection/collection.dart';
 
 void main() {
   int smallestChair(List<List<int>> times, int targetFriend) {
-    final minStartHeap = HeapPriorityQueue<List<int>>((a, b) {
-      if (a.first < b.first) {
-        return -1;
-      } else if (a.first == b.first) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
+    final targetArrival = times[targetFriend][0];
+    times.sort((a, b) => a.first.compareTo(b.first));
 
-    for (var i = 0; i < times.length; i++) {
-      final time = times[i];
-      minStartHeap.add([time.first, time.last, i]);
+    final emptyChairs = HeapPriorityQueue<int>((a, b) => a.compareTo(b));
+    for (int i = 0; i < times.length; i++) {
+      emptyChairs.add(i);
     }
 
-    final endHeap = HeapPriorityQueue<List<int>>((a, b) {
-      if (a[1] < b[1]) {
-        return -1;
-      } else if (a[1] == b[1]) {
-        return 0;
-      } else {
-        return 1;
-      }
-    });
+    final occupied = HeapPriorityQueue<List<int>>(
+      (a, b) => a.first.compareTo(b.first),
+    );
 
-    endHeap.add(minStartHeap.removeFirst());
-    var smallestChair = endHeap.length;
-    while (minStartHeap.isNotEmpty) {
-      final time = minStartHeap.removeFirst();
+    for (final time in times) {
+      final arrival = time.first;
+      final leave = time.last;
 
-      if (endHeap.first[1] <= time.first) {
-        final removed = endHeap.removeFirst();
-        smallestChair = removed.last;
-        final index = time.last;
-        if (index == targetFriend) {
-          break;
-        }
-        endHeap.add([time[0], time[1], smallestChair]);
-      } else {
-        smallestChair = endHeap.length;
-        endHeap.add([time[0], time[1], time.last]);
+      while (occupied.isNotEmpty && occupied.first.first <= arrival) {
+        emptyChairs.add(occupied.removeFirst().last);
       }
+
+      final currentChair = emptyChairs.removeFirst();
+
+      if (arrival == targetArrival) {
+        return currentChair;
+      }
+
+      occupied.add([leave, currentChair]);
     }
-    return smallestChair;
+    return 0;
   }
 
   // CASE 1
