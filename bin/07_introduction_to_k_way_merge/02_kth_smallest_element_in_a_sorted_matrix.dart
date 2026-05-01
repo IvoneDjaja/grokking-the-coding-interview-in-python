@@ -6,14 +6,14 @@ void main() {
 
     for (var i = 0; i < matrix.length; i++) {
       for (var j = 0; j < matrix[0].length; j++) {
-        if (maxHeap.length == k) {
-          return maxHeap.first;
-        }
         maxHeap.add(matrix[i][j]);
+        if (maxHeap.length == k) {
+          maxHeap.removeFirst();
+        }
       }
     }
 
-    return -1;
+    return maxHeap.removeFirst();
   }
 
   /// CASE 1
