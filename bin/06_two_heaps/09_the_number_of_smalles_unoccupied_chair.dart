@@ -5,32 +5,31 @@ import 'package:collection/collection.dart';
 /// Retry: 1
 void main() {
   int smallestChair(List<List<int>> times, int targetFriend) {
-    final targetTime = times[targetFriend];
-
+    final targetArrival = times[targetFriend].first;
     times.sort((a, b) => a.first.compareTo(b.first));
 
-    final startTimes = [];
-    for (var i = 0; i < times.length; i++) {
-      startTimes.add([times[i][0], times[i][1], i]);
+    final emptyChairs = HeapPriorityQueue<int>((a, b) => a.compareTo(b));
+    for (int i = 0; i < times.length; i++) {
+      emptyChairs.add(i);
     }
 
-    final minEndHeap = HeapPriorityQueue<List<int>>(
-      (a, b) => a[1].compareTo(b[1]),
+    final occupied = HeapPriorityQueue<List<int>>(
+      (a, b) => a.first.compareTo(b.first),
     );
 
-    final startTime = startTimes.first;
-    minEndHeap.add([startTime[0], startTime[1], 0]);
-    for (var i = 1; i < times.length; i++) {
-      final time = times[i];
-      var smallest = i;
-      while (minEndHeap.isNotEmpty && minEndHeap.first[1] <= time[0]) {
-        final pop = minEndHeap.removeFirst();
-        smallest = min(smallest, pop.last);
+    for (final time in times) {
+      final arrival = time.first;
+      final leave = time.last;
+
+      while (occupied.isNotEmpty && occupied.first.first <= arrival) {
+        emptyChairs.add(occupied.removeFirst().last);
       }
-      if (time.first == targetTime.first) {
-        return smallest;
+
+      final currentChair = emptyChairs.removeFirst();
+      if (arrival == targetArrival) {
+        return currentChair;
       }
-      minEndHeap.add([time[0], time[1], smallest]);
+      occupied.add([leave, currentChair]);
     }
 
     return 0;
