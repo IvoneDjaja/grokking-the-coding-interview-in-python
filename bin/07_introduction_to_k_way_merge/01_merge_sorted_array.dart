@@ -5,10 +5,7 @@ void main() {
     var index = m + n - 1;
     var index1 = m - 1;
     var index2 = n - 1;
-    while (index > -1) {
-      if (index1 < 0 || index2 < 0) {
-        break;
-      }
+    while (index1 > -1 && index2 > -1) {
       if (nums1[index1] > nums2[index2]) {
         nums1[index] = nums1[index1];
         index1 -= 1;
@@ -16,11 +13,6 @@ void main() {
         nums1[index] = nums2[index2];
         index2 -= 1;
       }
-      index -= 1;
-    }
-    while (index1 > -1) {
-      nums1[index] = nums1[index1];
-      index1 -= 1;
       index -= 1;
     }
     while (index2 > -1) {
