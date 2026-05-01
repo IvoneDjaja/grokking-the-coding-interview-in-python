@@ -23,7 +23,7 @@ void main() {
     for (var i = 1; i < times.length; i++) {
       final time = times[i];
       var smallest = i;
-      if (minEndHeap.isNotEmpty && minEndHeap.first[1] <= time[0]) {
+      while (minEndHeap.isNotEmpty && minEndHeap.first[1] <= time[0]) {
         final pop = minEndHeap.removeFirst();
         smallest = min(smallest, pop.last);
       }
@@ -33,7 +33,7 @@ void main() {
       minEndHeap.add([time[0], time[1], smallest]);
     }
 
-    return -1;
+    return 0;
   }
 
   // CASE 1
@@ -107,4 +107,15 @@ void main() {
   ];
   final targetFriend7 = 0;
   print(smallestChair(times7, targetFriend7));
+
+  // CASE 8
+  final times8 = [
+    [1, 10],
+    [2, 3],
+    [4, 20],
+    [11, 30],
+    [12, 40],
+  ];
+  final targetFriend8 = 4;
+  print(smallestChair(times8, targetFriend8));
 }
