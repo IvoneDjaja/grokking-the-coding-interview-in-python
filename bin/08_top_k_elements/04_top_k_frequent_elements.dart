@@ -6,24 +6,20 @@ void main() {
       (a, b) => a.last.compareTo(b.last),
     );
 
-    final countList = {};
+    final countMap = <int, int>{};
 
     for (var num in arr) {
-      if (countList[num] == null) {
-        countList[num] = 0;
-      }
-      countList[num] += 1;
+      countMap[num] = (countMap[num] ?? 0) + 1;
     }
 
-    for (var key in countList.keys) {
-      final count = countList[key];
-      minHeap.add([key, count]);
+    for (var entry in countMap.entries) {
+      minHeap.add([entry.key, entry.value]);
       if (minHeap.length > k) {
         minHeap.removeFirst();
       }
     }
 
-    return minHeap.toList().map((key) => key.first).toList();
+    return minHeap.unorderedElements.map((key) => key.first).toList();
   }
 
   /// CASE 1
