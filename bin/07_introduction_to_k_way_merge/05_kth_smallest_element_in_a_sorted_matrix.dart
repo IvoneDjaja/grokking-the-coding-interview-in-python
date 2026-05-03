@@ -1,19 +1,23 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 
 void main() {
   int kthSmallestElement(List<List<int>> matrix, int k) {
-    final output = <int>[];
+    var output = 0;
     final minHeap = HeapPriorityQueue<List<int>>(
       (a, b) => a.first.compareTo(b.first),
     );
+    var count = 0;
 
-    for (var i = 0; i < matrix.length; i++) {
+    for (var i = 0; i < min(k, matrix.length); i++) {
       minHeap.add([matrix[i][0], i, 0]);
     }
 
-    while (minHeap.isNotEmpty && output.length < k) {
+    while (minHeap.isNotEmpty && count < k) {
       final smallest = minHeap.removeFirst();
-      output.add(smallest.first);
+      output = smallest.first;
+      count += 1;
       final i = smallest[1];
       final j = smallest.last;
 
@@ -22,7 +26,7 @@ void main() {
       }
     }
 
-    return output.last;
+    return output;
   }
 
   /// CASE 1
