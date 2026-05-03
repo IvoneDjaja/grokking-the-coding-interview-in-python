@@ -19,9 +19,10 @@ void main() {
     }
 
     while (maxHeap.isNotEmpty) {
-      final firstChar = maxHeap.removeFirst();
-      var firstCount = firstChar.$2;
-      if (output.isNotEmpty && output[output.length - 1] == firstChar.$1) {
+      final first = maxHeap.removeFirst();
+      var firstChar = first.$1;
+      var firstCount = first.$2;
+      if (output.isNotEmpty && output[output.length - 1] == firstChar) {
         if (maxHeap.isEmpty) {
           return '';
         }
@@ -31,11 +32,11 @@ void main() {
           maxHeap.add((secondChar.$1, secondChar.$2 - 1));
         }
       } else {
-        output = '$output${firstChar.$1}';
+        output = '$output$firstChar';
         firstCount -= 1;
       }
       if (firstCount > 0) {
-        maxHeap.add((firstChar.$1, firstCount));
+        maxHeap.add((firstChar, firstCount));
       }
     }
 
