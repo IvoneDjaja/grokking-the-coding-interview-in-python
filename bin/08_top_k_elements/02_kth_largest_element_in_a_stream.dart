@@ -1,25 +1,25 @@
 import 'package:collection/collection.dart';
 
 class KthLargest {
-  const KthLargest({required this.nums, required this.k});
+  KthLargest({required List<int> nums, required this.k}) {
+    for (var num in nums) {
+      add(num);
+    }
+  }
 
-  final List<int> nums;
+  final HeapPriorityQueue<int> minHeap = HeapPriorityQueue<int>(
+    (a, b) => a.compareTo(b),
+  );
   final int k;
 
   int add(int val) {
-    nums.add(val);
+    minHeap.add(val);
 
-    final maxHeap = HeapPriorityQueue<int>((a, b) => b.compareTo(a));
-
-    for (var num in nums) {
-      maxHeap.add(num);
+    if (minHeap.length > k) {
+      minHeap.removeFirst();
     }
 
-    for (var i = 0; i < k - 1; i++) {
-      maxHeap.removeFirst();
-    }
-
-    return maxHeap.removeFirst();
+    return minHeap.first;
   }
 }
 
