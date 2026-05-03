@@ -2,24 +2,27 @@ import 'package:collection/collection.dart';
 
 void main() {
   List<List<int>> kSmallestPairs(List<int> list1, List<int> list2, int k) {
+    final output = <List<int>>[];
     final minHeap = HeapPriorityQueue<List<int>>(
-      (a, b) => (a.first + a.last).compareTo(b.first + b.last),
+      (a, b) => a.first.compareTo(b.first),
     );
 
-    var count = 0;
     for (var i = 0; i < list1.length; i++) {
-      for (var j = 0; j < list2.length; j++) {
-        final num1 = list1[i];
-        final num2 = list2[j];
-        if (count == k) {
-          break;
-        }
-        minHeap.add([num1, num2]);
-        count += 1;
+      minHeap.add([list1[i] + list2[0], i, 0]);
+    }
+
+    while (minHeap.isNotEmpty && output.length < k) {
+      final smallest = minHeap.removeFirst();
+      final i = smallest[1];
+      final j = smallest[2];
+      output.add([i, j]);
+
+      if (j + 1 < list2.length) {
+        minHeap.add([list1[i] + list2[j + 1], i, j + 1]);
       }
     }
 
-    return minHeap.toList();
+    return output;
   }
 
   /// CASE 1
