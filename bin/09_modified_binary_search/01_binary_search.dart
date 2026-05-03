@@ -3,7 +3,7 @@ void main() {
     var low = 0;
     var high = nums.length - 1;
 
-    while (low < high) {
+    while (low <= high) {
       final mid = (low + high) ~/ 2;
       if (nums[mid] == target) {
         return mid;
