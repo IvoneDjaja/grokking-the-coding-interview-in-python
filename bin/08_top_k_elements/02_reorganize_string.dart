@@ -20,6 +20,7 @@ void main() {
 
     while (maxHeap.isNotEmpty) {
       final firstChar = maxHeap.removeFirst();
+      var firstCount = firstChar.$2;
       if (output.isNotEmpty && output[output.length - 1] == firstChar.$1) {
         if (maxHeap.isEmpty) {
           return '';
@@ -31,9 +32,10 @@ void main() {
         }
       } else {
         output = '$output${firstChar.$1}';
+        firstCount -= 1;
       }
-      if (firstChar.$2 - 1 > 0) {
-        maxHeap.add((firstChar.$1, firstChar.$2 - 1));
+      if (firstCount > 0) {
+        maxHeap.add((firstChar.$1, firstCount));
       }
     }
 
