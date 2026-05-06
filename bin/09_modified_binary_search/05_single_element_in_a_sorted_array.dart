@@ -1,10 +1,12 @@
+/// Retry: 1
 void main() {
+  //
   int singleNonDuplicate(List<int> nums) {
     var low = 0;
     var high = nums.length - 1;
 
     while (low < high) {
-      var mid = low + ((high - low) ~/ 2);
+      var mid = low + (high - low) ~/ 2;
       if (mid % 2 == 1) {
         mid -= 1;
       }
@@ -14,7 +16,6 @@ void main() {
         high = mid - 1;
       }
     }
-
     return nums[low];
   }
 
