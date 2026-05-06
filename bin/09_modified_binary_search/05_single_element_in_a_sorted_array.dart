@@ -3,28 +3,19 @@ void main() {
     var low = 0;
     var high = nums.length - 1;
 
-    while (low <= high) {
-      final mid = low + ((high - low) ~/ 2);
-      if ((mid - 1 < 0 || nums[mid] != nums[mid - 1]) &&
-          ((mid + 1 > nums.length || nums[mid] != nums[mid + 1]) ||
-              mid + 1 >= high)) {
-        return nums[mid];
+    while (low < high) {
+      var mid = low + ((high - low) ~/ 2);
+      if (mid % 2 == 1) {
+        mid -= 1;
       }
-      int leftSize;
-      if (nums[mid - 1] == nums[mid]) {
-        leftSize = mid - 1;
+      if (nums[mid] == nums[mid + 1]) {
+        low = mid + 2;
       } else {
-        leftSize = mid;
-      }
-
-      if (leftSize % 2 == 1) {
         high = mid - 1;
-      } else {
-        low = mid + 1;
       }
     }
 
-    return low;
+    return nums[low];
   }
 
   /// CASE 1
