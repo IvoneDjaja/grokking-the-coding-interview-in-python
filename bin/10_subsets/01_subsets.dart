@@ -21,11 +21,11 @@ void main() {
     var result = <List<int>>[[]];
 
     for (var num in nums) {
-      final newResult = result.toList();
+      final newSubsets = <List<int>>[];
       for (var current in result) {
-        newResult.add(current.toList()..add(num));
+        newSubsets.add([...current, num]);
       }
-      result = newResult;
+      result.addAll(newSubsets);
     }
 
     return result;
