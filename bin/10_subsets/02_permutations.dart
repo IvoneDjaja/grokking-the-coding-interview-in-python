@@ -1,22 +1,20 @@
 void main() {
   List<String> permuteWord(String word) {
-    final output = <String>[];
+    if (word.isEmpty) {
+      return [''];
+    }
 
-    void backtrack(String permutation) {
-      if (permutation.length == word.length) {
-        output.add(permutation);
-        return;
-      }
-      for (var i = 0; i < word.length; i++) {
-        if (!'$permutation'.contains(word[i])) {
-          backtrack('$permutation${word[i]}');
-        }
+    final perms = permuteWord(word.substring(1));
+    final result = <String>[];
+    for (var perm in perms) {
+      for (var i = 0; i < perm.length + 1; i++) {
+        final perm_copy =
+            '${perm.substring(0, i)}${word[0]}${perm.substring(i)}';
+        result.add(perm_copy);
       }
     }
 
-    backtrack('');
-
-    return output;
+    return result;
   }
 
   /// CASE 1
