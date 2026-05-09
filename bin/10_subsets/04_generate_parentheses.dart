@@ -1,22 +1,26 @@
 void main() {
   List<String> generateCombinations(int n) {
     final output = <String>[];
+    final stack = <String>[];
 
-    void backtrack(String path, int i, int j) {
-      if (path.length == n * 2) {
-        output.add(path);
+    void backtrack(int open, int closed) {
+      if (open == n && closed == n) {
+        output.add(stack.join(''));
         return;
       }
-      if (i <= j) {
-        final newPath = '$path(';
-        backtrack(newPath, i + 1, j);
-      } else {
-        final newPath = '$path)';
-        backtrack(newPath, i, j + 1);
+      if (open < n) {
+        stack.add('(');
+        backtrack(open + 1, closed);
+        stack.removeLast();
+      }
+      if (open > closed) {
+        stack.add(')');
+        backtrack(open, closed + 1);
+        stack.removeLast();
       }
     }
 
-    backtrack("", 0, 0);
+    backtrack(0, 0);
 
     return output;
   }
