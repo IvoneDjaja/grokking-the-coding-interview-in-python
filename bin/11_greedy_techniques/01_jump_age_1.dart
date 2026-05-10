@@ -1,28 +1,14 @@
 void main() {
   bool jumpGame(List<int> nums) {
-    bool backtrack(int start) {
-      if (start == nums.length - 1) {
-        return true;
+    var goal = nums.length - 1;
+
+    for (var i = nums.length - 1; i > -1; i--) {
+      if (i + nums[i] >= goal) {
+        goal = i;
       }
-      if (start > nums.length - 1) {
-        return false;
-      }
-      if (start + nums[start] <= start) {}
-      var flag = false;
-      for (var i = start; i < nums.length; i++) {
-        if (i + nums[i] <= i) {
-          return false;
-        } else {
-          if (backtrack(i + nums[i])) {
-            return true;
-          }
-          flag = flag || backtrack(i + nums[i]);
-        }
-      }
-      return flag;
     }
 
-    return backtrack(0);
+    return goal == 0;
   }
 
   /// CASE 1
