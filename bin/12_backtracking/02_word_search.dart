@@ -3,42 +3,36 @@ void main() {
     final m = grid.length;
     final n = grid.first.length;
 
-    final mark = List.generate(m, (i) => List.generate(n, (j) => false));
-
     bool backtrack(int i, int j, int index) {
-      if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || mark[i][j]) {
-        return false;
-      } else if (index == word.length) {
+      if (index == word.length) {
         return true;
-      } else if (grid[i][j] != word[index]) {
-        return false;
-      } else {
-        mark[i][j] = true;
-        final result =
-            backtrack(i + 1, j, index + 1) ||
-            backtrack(i, j + 1, index + 1) ||
-            backtrack(i - 1, j, index + 1) ||
-            backtrack(i, j - 1, index + 1);
-        mark[i][j] = false;
-        return result;
       }
+      if (i < 0 ||
+          i > m - 1 ||
+          j < 0 ||
+          j > n - 1 ||
+          grid[i][j] != word[index]) {
+        return false;
+      }
+      final temp = grid[i][j];
+      grid[i][j] = '#';
+      final result =
+          backtrack(i + 1, j, index + 1) ||
+          backtrack(i, j + 1, index + 1) ||
+          backtrack(i - 1, j, index + 1) ||
+          backtrack(i, j - 1, index + 1);
+      grid[i][j] = temp;
+      return result;
     }
 
     final starts = <List<int>>[];
     for (var i = 0; i < m; i++) {
       for (var j = 0; j < n; j++) {
         if (grid[i][j] == word[0]) {
-          starts.add([i, j]);
+          if (backtrack(i, j, 0)) {
+            return true;
+          }
         }
-      }
-    }
-
-    for (var start in starts) {
-      final i = start.first;
-      final j = start.last;
-      var index = 0;
-      if (backtrack(i, j, index)) {
-        return true;
       }
     }
     return false;
@@ -80,4 +74,10 @@ void main() {
     ['A', 'S', 'D'],
   ];
   print(wordSearch(board4, 'ASDSA'));
+
+  /// CASE 5
+  final board5 = [
+    ['H'],
+  ];
+  print(wordSearch(board5, 'H'));
 }
