@@ -1,32 +1,23 @@
 void main() {
   int gasStationJourneys(List<int> gas, List<int> cost) {
-    var startIndexes = [];
-    final n = gas.length;
+    if (gas.fold(0, (prev, curr) => prev + curr) <
+        cost.fold(0, (prev, curr) => prev + curr)) {
+      return -1;
+    }
 
-    for (var i = 0; i < n; i++) {
-      if (gas[i] >= cost[i]) {
-        startIndexes.add(i);
+    var totalGas = 0;
+    var startIndex = 0;
+
+    for (var i = 0; i < gas.length; i++) {
+      totalGas += gas[i] - cost[i];
+
+      if (totalGas < 0) {
+        startIndex = i + 1;
+        totalGas = 0;
       }
     }
 
-    for (var startIndex in startIndexes) {
-      var hasReturned = false;
-      var totalGas = gas[startIndex] - cost[startIndex];
-      var index = startIndex;
-      while (totalGas >= 0) {
-        index = (index + 1) % n;
-        if (index == startIndex) {
-          hasReturned = true;
-          break;
-        }
-        totalGas = totalGas + gas[index] - cost[index];
-      }
-      final output = hasReturned ? startIndex : -1;
-      if (output != -1) {
-        return output;
-      }
-    }
-    return -1;
+    return startIndex;
   }
 
   /// CASE 1
