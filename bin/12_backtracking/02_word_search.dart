@@ -3,19 +3,23 @@ void main() {
     final m = grid.length;
     final n = grid.first.length;
 
+    final mark = List.generate(m, (i) => List.generate(n, (j) => false));
+
     bool backtrack(int i, int j, int index) {
-      if (i < 0 || i > m - 1 || j < 0 || j > n - 1) {
+      if (i < 0 || i > m - 1 || j < 0 || j > n - 1 || mark[i][j]) {
         return false;
       } else if (index == word.length) {
         return true;
       } else if (grid[i][j] != word[index]) {
         return false;
       } else {
+        mark[i][j] = true;
         final result =
             backtrack(i + 1, j, index + 1) ||
             backtrack(i, j + 1, index + 1) ||
             backtrack(i - 1, j, index + 1) ||
             backtrack(i, j - 1, index + 1);
+        mark[i][j] = false;
         return result;
       }
     }
