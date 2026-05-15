@@ -1,46 +1,41 @@
 import 'dart:math';
 
 class ListNode {
-  ListNode({this.val = 0, this.left, this.right});
+  ListNode({this.data = 0, this.left, this.right});
 
-  int val;
+  int data;
   ListNode? left;
   ListNode? right;
 }
 
 void main() {
-  int backtrack(ListNode? node, bool isNeighbor) {
+  List<int> backtrack(ListNode? node) {
     if (node == null) {
-      return 0;
+      return [0, 0];
     }
 
-    var include = 0;
-    var exclude = 0;
-    if (isNeighbor) {
-      include =
-          node.val + backtrack(node.left, false) + backtrack(node.right, false);
-    } else {
-      exclude =
-          max(backtrack(node.left, true), backtrack(node.left, false)) +
-          max(backtrack(node.right, true), backtrack(node.right, false));
-    }
-    return max(include, exclude);
+    final left = backtrack(node.left);
+    final right = backtrack(node.right);
+
+    final include = node.data + left.last + right.last;
+    final exclude = max(left.first, left.last) + max(right.first, right.last);
+
+    return [include, exclude.toInt()];
   }
 
   int rob(ListNode root) {
-    final include = backtrack(root, true);
-    final exclude = backtrack(root, false);
-    return max(include, exclude);
+    final money = backtrack(root);
+    return max(money.first, money.last);
   }
 
   /// CASE 1
-  final node4 = ListNode(val: 10);
-  final node5 = ListNode(val: 12);
-  final node6 = ListNode(val: 3);
-  final node7 = ListNode(val: 1);
-  final node2 = ListNode(val: 5, left: node4, right: node5);
-  final node3 = ListNode(val: 25, left: node6, right: node7);
-  final node1 = ListNode(val: 3, left: node2, right: node3);
+  final node4 = ListNode(data: 10);
+  final node5 = ListNode(data: 12);
+  final node6 = ListNode(data: 3);
+  final node7 = ListNode(data: 1);
+  final node2 = ListNode(data: 5, left: node4, right: node5);
+  final node3 = ListNode(data: 25, left: node6, right: node7);
+  final node1 = ListNode(data: 3, left: node2, right: node3);
   print(rob(node1));
 
   /// CASE 2
