@@ -2,23 +2,20 @@ void main() {
   List<List<int>> combine(int n, int k) {
     final output = <List<int>>[];
 
-    void backtrack(List<int> combination, int i) {
+    void backtrack(int start, List<int> combination) {
       if (combination.length == k) {
         output.add(List.from(combination));
         return;
       }
-      for (var j = i; j < n; j++) {
-        combination.add(j + 1);
-        backtrack(combination, j + 1);
+      for (var i = start; i < n; i++) {
+        combination.add(i + 1);
+        backtrack(i + 1, combination);
         combination.removeLast();
       }
       return;
     }
 
-    for (var i = 0; i < k; i++) {
-      final combination = <int>[i + 1];
-      backtrack(combination, i);
-    }
+    backtrack(0, []);
 
     return output;
   }
@@ -28,4 +25,13 @@ void main() {
 
   /// CASE 2
   print(combine(2, 2));
+
+  /// CASE 3
+  print(combine(3, 3));
+
+  /// CASE 4
+  print(combine(3, 1));
+
+  /// CASE 5
+  print(combine(5, 3));
 }
