@@ -7,22 +7,20 @@ void main() {
     var maxProduct = nums.first;
     var product = 1;
     for (var i = 0; i < n; i++) {
-      if (nums[i] == 0) {
-        product = 1;
-        continue;
-      }
       product = product * nums[i];
       maxProduct = max(maxProduct, product);
+      if (nums[i] == 0) {
+        product = 1;
+      }
     }
 
     product = 1;
     for (var i = n - 1; i > -1; i--) {
-      if (nums[i] == 0) {
-        product = 1;
-        continue;
-      }
       product = product * nums[i];
       maxProduct = max(maxProduct, product);
+      if (nums[i] == 0) {
+        product = 1;
+      }
     }
 
     return maxProduct;
