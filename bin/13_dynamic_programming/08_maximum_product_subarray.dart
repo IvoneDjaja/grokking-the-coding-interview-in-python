@@ -4,15 +4,23 @@ void main() {
   int maxProduct(List<int> nums) {
     final n = nums.length;
 
-    var maxProduct = 0;
+    var maxProduct = nums.first;
     var product = 1;
     for (var i = 0; i < n; i++) {
+      if (nums[i] == 0) {
+        product = 1;
+        continue;
+      }
       product = product * nums[i];
       maxProduct = max(maxProduct, product);
     }
 
     product = 1;
     for (var i = n - 1; i > -1; i--) {
+      if (nums[i] == 0) {
+        product = 1;
+        continue;
+      }
       product = product * nums[i];
       maxProduct = max(maxProduct, product);
     }
@@ -41,6 +49,10 @@ void main() {
   print(maxProduct(nums5));
 
   /// CASE 6
-  final nums7 = [-2, 0, 3, 0, 1];
+  final nums6 = [-2, 0, 3, 0, 1];
+  print(maxProduct(nums6));
+
+  /// CASE 7
+  final nums7 = [-2, 0, -1];
   print(maxProduct(nums7));
 }
