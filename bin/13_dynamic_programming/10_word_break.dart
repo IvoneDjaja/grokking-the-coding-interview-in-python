@@ -1,16 +1,24 @@
+import 'dart:math';
+
 void main() {
   bool wordBreak(String s, Set<String> wordDict) {
     final sArray = List.generate(s.length + 1, (_) => false);
     sArray[s.length] = true;
 
-    for (var i = s.length; i > -1; i--) {
-      for (var word in wordDict) {
-        if (i + word.length <= s.length &&
-            s.substring(i, i + word.length) == word) {
-          sArray[i] = sArray[i + word.length];
-        }
-        if (sArray[i]) {
-          break;
+    var maxWordLength = 0;
+    for (var word in wordDict) {
+      maxWordLength = max(maxWordLength, word.length);
+    }
+
+    for (var i = s.length - 1; i > -1; i--) {
+      final maxJump = min(s.length, i + maxWordLength);
+      for (var j = i + 1; j <= maxJump; j++) {
+        if (sArray[j]) {
+          final word = s.substring(i, j);
+          if (wordDict.contains(word)) {
+            sArray[i] = true;
+            break;
+          }
         }
       }
     }
