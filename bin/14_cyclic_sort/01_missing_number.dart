@@ -1,26 +1,28 @@
 void main() {
   int findMissingNumber(List<int> nums) {
-    for (var num in nums) {
-      final i = num.abs() - 1;
-      if (i >= 0 && i < nums.length) {
-        if (nums[i] > 0) {
-          nums[i] = -1 * nums[i];
-        }
+    var i = 0;
+    while (i < nums.length) {
+      final index = nums[i];
+      if (index < nums.length && nums[i] != nums[index]) {
+        nums[i] = nums[index];
+        nums[index] = index;
+      } else {
+        i += 1;
       }
     }
 
     for (var i = 0; i < nums.length; i++) {
-      if (nums[i] > 0) {
-        return i + 1;
+      if (i != nums[i]) {
+        return i;
       }
     }
 
-    return nums.length + 1;
+    return nums.length;
   }
 
   /// CASE 1
   final nums1 = [5, 6, 4, 2, 1, 3, 0, 7, 9];
-print(findMissingNumber(nums1));
+  print(findMissingNumber(nums1));
 
   /// CASE 2
   final nums2 = [5, 6, 10, 2, 1, 3, 0, 7, 9, 12, 11, 8];
