@@ -2,23 +2,21 @@ import 'dart:math';
 
 void main() {
   int smallestMissingPositiveInteger(List<int> nums) {
+    final n = nums.length;
     var i = 0;
-    while (i < nums.length) {
-      final temp = nums[i];
-      if (i + 1 != nums[i] && temp - 1 < nums.length && temp > 0) {
-        nums[i] = nums[temp - 1];
-        nums[temp - 1] = temp;
+    while (i < n) {
+      final index = nums[i] - 1;
+      if (nums[i] > 0 && nums[i] <= n && nums[i] != nums[index]) {
+        final temp = nums[i];
+        nums[i] = nums[index];
+        nums[index] = temp;
       } else {
         i += 1;
       }
     }
     for (var i = 0; i < nums.length; i++) {
       if (i + 1 != nums[i]) {
-        if (nums[i] > 0) {
-          return min(i + 1, nums[i]);
-        } else {
-          return i + 1;
-        }
+        return i + 1;
       }
     }
 

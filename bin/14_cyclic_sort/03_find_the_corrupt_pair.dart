@@ -1,19 +1,19 @@
 void main() {
-  List<int> findCorruptPair(List<int> input) {
+  List<int> findCorruptPair(List<int> nums) {
     var i = 0;
-    while (i < input.length) {
-      final temp = input[i];
-      if (i + 1 != input[i] && input[i] != input[temp - 1]) {
-        input[i] = input[temp - 1];
-        input[temp - 1] = temp;
+    while (i < nums.length) {
+      final temp = nums[i];
+      if (i + 1 != nums[i] && nums[i] != nums[temp - 1]) {
+        nums[i] = nums[temp - 1];
+        nums[temp - 1] = temp;
       } else {
         i += 1;
       }
     }
 
-    for (var i = 0; i < input.length; i++) {
-      if (i + 1 != input[i]) {
-        return [i + 1, input[i]];
+    for (var i = 0; i < nums.length; i++) {
+      if (i + 1 != nums[i]) {
+        return [i + 1, nums[i]];
       }
     }
 
