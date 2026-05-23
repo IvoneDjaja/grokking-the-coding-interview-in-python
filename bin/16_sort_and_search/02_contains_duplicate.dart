@@ -1,21 +1,15 @@
 void main() {
   bool containsNearbyDuplicate(List<int> nums, int k) {
-    var start = 0;
-    var end = 0;
-
     final duplicateSet = <int>{};
 
-    while (end < nums.length) {
-      if (end - start <= k) {
-        if (duplicateSet.contains(nums[end])) {
-          return true;
-        }
-        duplicateSet.add(nums[end]);
-      } else {
-        duplicateSet.remove(nums[start]);
-        start += 1;
+    for (var end = 0; end < nums.length; end++) {
+      if (end > k) {
+        duplicateSet.remove(nums[end - k - 1]);
       }
-      end += 1;
+      if (duplicateSet.contains(nums[end])) {
+        return true;
+      }
+      duplicateSet.add(nums[end]);
     }
 
     return false;
