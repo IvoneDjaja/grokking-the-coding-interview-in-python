@@ -1,10 +1,21 @@
+import 'dart:math';
+
 void main() {
   int hIndex(List<int> citations) {
-    citations.sort();
+    final n = citations.length;
+    final countArray = List.generate(n + 1, (_) => 0);
 
-    for (var i = 0; i < citations.length; i++) {
-      if (citations[i] == citations.length - i) {
-        return citations[i];
+    for (var i = 0; i < n; i++) {
+      final citation = citations[i];
+      final index = min(citation, citations.length);
+      countArray[index] += 1;
+    }
+    var count = 0;
+    for (var i = n; i > -1; i--) {
+      count += countArray[i];
+
+      if (count >= i) {
+        return i;
       }
     }
     return -1;
