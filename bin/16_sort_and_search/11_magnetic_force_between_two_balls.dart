@@ -1,23 +1,37 @@
-import 'package:collection/collection.dart';
-
 void main() {
   int maxDistance(List<int> position, int m) {
     position.sort();
-    final minHeap = HeapPriorityQueue<int>();
 
-    for (var i = 0; i < position.length - 1; i++) {
-      final pos1 = position[i];
-      final pos2 = position[i + 1];
-      minHeap.add(pos2 - pos1);
+    bool canPlace(int minDistance) {
+      var start = position[0];
+      var count = 1;
+      for (var i = 1; i < position.length; i++) {
+        final distance = position[i] - start;
+        if (distance >= minDistance) {
+          count += 1;
+          start = position[i];
+          if (count == m) {
+            return true;
+          }
+        }
+      }
+      return false;
     }
 
-    while (minHeap.length > m - 1) {
-      final distance1 = minHeap.removeFirst();
-      final distance2 = minHeap.removeFirst();
-      minHeap.add(distance1 + distance2);
-    }
+    var low = 0;
+    var high = position.last - position.first;
 
-    return minHeap.removeFirst();
+    var maxDistance = 0;
+    while (low <= high) {
+      final mid = (low + high) ~/ 2;
+      if (canPlace(mid)) {
+        maxDistance = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return maxDistance;
   }
 
   /// CASE 1
