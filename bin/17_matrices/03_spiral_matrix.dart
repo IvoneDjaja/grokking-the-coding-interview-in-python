@@ -23,9 +23,13 @@ void main() {
       }
       top += 1;
 
+      if (count == m * n) {
+        break;
+      }
+
       // bottom
       i = top + 1;
-      j -= 1;
+      j = right - 1;
       while (i < bottom) {
         output.add(matrix[i][j]);
         i += 1;
@@ -33,15 +37,23 @@ void main() {
       }
       right -= 1;
 
+      if (count == m * n) {
+        break;
+      }
+
       // left
       j = right - 1;
-      i -= 1;
+      i = bottom - 1;
       while (j > left) {
         output.add(matrix[i][j]);
         j -= 1;
         count += 1;
       }
       bottom -= 1;
+
+      if (count == m * n) {
+        break;
+      }
 
       // top
       i = bottom - 1;
