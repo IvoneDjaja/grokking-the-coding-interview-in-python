@@ -3,67 +3,37 @@ void main() {
     final m = matrix.length;
     final n = matrix.first.length;
 
-    var top = -1;
-    var bottom = m;
-    var left = -1;
-    var right = n;
+    var top = 0;
+    var bottom = m - 1;
+    var left = 0;
+    var right = n - 1;
 
     final output = <int>[];
-    var count = 0;
-    var i = 0;
-    var j = 0;
-    while (count < m * n) {
-      // right
-      i = top + 1;
-      j = left + 1;
-      while (j < right) {
-        output.add(matrix[i][j]);
-        j += 1;
-        count += 1;
+
+    while (top <= bottom && left <= right) {
+      for (var j = left; j < right + 1; j++) {
+        output.add(matrix[top][j]);
       }
       top += 1;
 
-      if (count == m * n) {
-        break;
-      }
-
-      // bottom
-      i = top + 1;
-      j = right - 1;
-      while (i < bottom) {
-        output.add(matrix[i][j]);
-        i += 1;
-        count += 1;
+      for (var i = top; i < bottom + 1; i++) {
+        output.add(matrix[i][right]);
       }
       right -= 1;
 
-      if (count == m * n) {
-        break;
+      if (top <= bottom) {
+        for (var j = right; j > left - 1; j--) {
+          output.add(matrix[bottom][j]);
+        }
+        bottom -= 1;
       }
 
-      // left
-      j = right - 1;
-      i = bottom - 1;
-      while (j > left) {
-        output.add(matrix[i][j]);
-        j -= 1;
-        count += 1;
+      if (left <= right) {
+        for (var i = bottom; i > top - 1; i--) {
+          output.add(matrix[i][left]);
+        }
+        left += 1;
       }
-      bottom -= 1;
-
-      if (count == m * n) {
-        break;
-      }
-
-      // top
-      i = bottom - 1;
-      j = left + 1;
-      while (i > top) {
-        output.add(matrix[i][j]);
-        i -= 1;
-        count += 1;
-      }
-      left += 1;
     }
 
     return output;
