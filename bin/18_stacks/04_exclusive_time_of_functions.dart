@@ -1,21 +1,24 @@
 void main() {
   List<int> exclusiveTime(int n, List<String> logs) {
     final times = List.generate(n, (_) => 0);
-    final stack = <int, List<int>>{};
-    for (var i = 0; i < n; i++) {
-      stack[i] = <int>[];
-    }
+    final stack = <int>[];
+    int prevTime = 0;
 
     for (var i = 0; i < logs.length; i++) {
       final log = logs[i].split(':');
       final id = int.parse(log.first);
       final event = log[1];
-      final time = int.parse(log.last);
+      final timestamp = int.parse(log.last);
       if (event == 'start') {
-        stack[id]!.add(time);
+        if (stack.isNotEmpty) {
+          times[stack.last] += timestamp - prevTime;
+        }
+        stack.add(id);
+        prevTime = timestamp;
       } else if (event == 'end') {
-        final start = stack[id]!.removeLast();
-        times[id] = time - start + 1;
+        stack.removeLast();
+        times[id] += timestamp - prevTime + 1;
+        prevTime = timestamp + 1;
       }
     }
     return times;
