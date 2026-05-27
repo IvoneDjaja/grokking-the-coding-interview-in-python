@@ -1,45 +1,28 @@
 void main() {
   String decodeString(String s) {
-    var output = '';
-    var numberIndexStack = [];
-    var parenthesesIndexStack = [];
-    var stringStack = [];
+    var stack = [];
 
-    var end = 0;
-    while (end < s.length) {
-      if (RegExp(r'^[0-9]$').hasMatch(s[end])) {
-        var start = end;
-        while (s[end] != '[') {
-          end += 1;
+    for (var i = 0; i < s.length; i++) {
+      if (s[i] != ']') {
+        stack.add(s[i]);
+      } else {
+        // get string
+        var string = '';
+        while (stack[stack.length - 1] != '[') {
+          string = stack.removeLast() + string;
         }
-        numberIndexStack.add([start, end]);
-        parenthesesIndexStack.add(end);
-        start = end + 1;
-      }
-      if (s[end] == ']') {
-        print('numberIndexStack: $numberIndexStack');
-        print('parenthesesIndexStack: $parenthesesIndexStack');
-        final countIndex = numberIndexStack.removeLast();
-        final start = parenthesesIndexStack.removeLast();
+        stack.removeLast();
 
-        final count = int.parse(s.substring(countIndex.first, countIndex.last));
-        var decoded = s.substring(start + 1, end) * count;
-
-        print('decoded: $decoded');
-        print('numberIndexStack: $numberIndexStack');
-        print('parenthesesIndexStack: $parenthesesIndexStack');
-
-        output += decoded;
-        if (parenthesesIndexStack.isNotEmpty) {
-          final prev = stringStack.removeLast();
-          stringStack.add(prev + decoded);
-        } else {
-          output += decoded;
+        var countString = '';
+        while (stack.isNotEmpty &&
+            RegExp(r'^[0-9]').hasMatch(stack[stack.length - 1])) {
+          countString = stack.removeLast() + countString;
         }
+        var count = int.parse(countString);
+        stack.add(string * count);
       }
-      end += 1;
     }
-    return output;
+    return stack.join('');
   }
 
   /// CASE 1
