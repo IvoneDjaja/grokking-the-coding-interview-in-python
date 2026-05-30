@@ -23,19 +23,24 @@ void main() {
   }
 
   Node? clone(Node? root) {
-    final nodeMap = <int, Node>{};
+    final nodeMap = <Node, Node>{};
 
     Node? dfs(Node? node) {
       if (node == null) {
         return null;
-      } else if (nodeMap.containsKey(node.data)) {
-        return nodeMap[node.data];
+      }
+
+      final cachedClone = nodeMap[node];
+      if (cachedClone != null) {
+        return cachedClone;
       }
       final clone = Node(data: node.data);
-      nodeMap[node.data] = clone;
+      nodeMap[node] = clone;
       for (var neighbor in node.neighbors) {
         final neighborClone = dfs(neighbor);
-        clone.neighbors.add(neighborClone!);
+        if (neighborClone != null) {
+          clone.neighbors.add(neighborClone!);
+        }
       }
       return clone;
     }
