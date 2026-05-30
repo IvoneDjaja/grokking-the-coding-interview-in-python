@@ -22,22 +22,25 @@ void main() {
     return nodeMap[1];
   }
 
-  Node? clone(Node root) {
-    final output = null;
-
+  Node? clone(Node? root) {
     final nodeMap = <int, Node>{};
 
-    final queue = [root];
-    while (queue.isNotEmpty) {
-      final node = queue.removeAt(0);
-      if (!nodeMap.containsKey(node.data)) {
-        final neighbors = node.neighbors;
-        final clone = Node(data: node.data);
+    Node? dfs(Node? node) {
+      if (node == null) {
+        return null;
+      } else if (nodeMap.containsKey(node.data)) {
+        return nodeMap[node.data];
       }
-      if (node.neighbors.isNotEmpty) {}
+      final clone = Node(data: node.data);
+      nodeMap[node.data] = clone;
+      for (var neighbor in node.neighbors) {
+        final neighborClone = dfs(neighbor);
+        clone.neighbors.add(neighborClone!);
+      }
+      return clone;
     }
 
-    return output;
+    return dfs(root);
   }
 
   /// CASE 1
@@ -47,5 +50,6 @@ void main() {
     [2, 4],
     [1, 3],
   ];
-  print(createGraph(input1)!.data);
+  final graph1 = createGraph(input1)!;
+  print(clone(graph1)!.data);
 }
