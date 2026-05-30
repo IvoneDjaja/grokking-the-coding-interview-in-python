@@ -1,23 +1,42 @@
 void main() {
   bool validTree(int n, List<List<int>> edges) {
+    // A valid tree MUST have exactly n - 1 edges
+    if (edges.length != n - 1) {
+      return false;
+    }
+
     final parentMap = <int, int>{};
+
+    int findRoot(node) {
+      while (node != parentMap[node]) {
+        parentMap[node] = parentMap[parentMap[node]]!;
+        node = parentMap[node];
+      }
+      return node;
+    }
 
     for (var i = 0; i < n; i++) {
       parentMap[i] = i;
     }
 
     for (var edge in edges) {
-      final parent = edge.first;
-      final child = edge.last;
-      if (parentMap[child] == parentMap[parent]) {
+      final parent = findRoot(edge.first);
+      final child = findRoot(edge.last);
+      if (parent == child) {
         return false;
       }
-      parentMap[child] = parentMap[parent]!;
+      parentMap[child] = parent;
     }
 
-    return parentMap.values.every(
-      (element) => element == parentMap.values.first,
-    );
+    // var rootCount = 0;
+    // for (var i = 0; i < n; i++) {
+    //   if (parentMap[i] == i) {
+    //     rootCount += 1;
+    //   }
+    // }
+    // return rootCount == 1;
+
+    return true;
   }
 
   /// CASE 1
