@@ -1,11 +1,9 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
+
 void main() {
   int networkDelayTime(List<List<int>> times, int n, int k) {
-    if (times.length != n - 1) {
-      return -1;
-    }
-
     final edgeList = <int, List<List<int>>>{};
     for (var i = 1; i < n + 1; i++) {
       edgeList[i] = [];
@@ -18,26 +16,36 @@ void main() {
       edgeList[source]!.add([destination, time]);
     }
 
-    final queue = [
-      [k, 0],
-    ];
-    var minTime = -1;
-    var maxTime = -1;
-    while (queue.isNotEmpty) {
-      final node = queue.removeAt(0);
-      final start = node.first;
-      final time = node.last;
-      final neighbors = edgeList[start]!;
+    final minHeap = HeapPriorityQueue<List<int>>(
+      (a, b) => a.first.compareTo(b.first),
+    );
+    minHeap.add([0, k]);
+    final minTimes = <int, int>{};
+    while (minHeap.isNotEmpty) {
+      final node = minHeap.removeFirst();
+      final start = node.last;
+      final time = node.first;
 
-      for (final neighbor in neighbors) {
-        final neighborTime = time + neighbor.last;
-        maxTime = max(maxTime, neighborTime);
-        queue.add([neighbor.first, neighborTime]);
+      if (minTimes.containsKey(start)) {
+        continue;
       }
-      minTime = maxTime;
+
+      minTimes[start] = time;
+      final neighbors = edgeList[start]!;
+      for (final neighbor in neighbors) {
+        final node = neighbor.first;
+        final weight = neighbor.last;
+        if (!minTimes.containsKey(node)) {
+          final neighborTime = time + weight;
+          minHeap.add([neighborTime, node]);
+        }
+      }
     }
 
-    return minTime;
+    if (minTimes.length == n) {
+      return minTimes.values.reduce((current, next) => max(current, next));
+    }
+    return -1;
   }
 
   /// CASE 1
