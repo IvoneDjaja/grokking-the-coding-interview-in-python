@@ -8,7 +8,7 @@ class TreeNode {
 
 void main() {
   TreeNode? lowestCommonAncestor(TreeNode? node, TreeNode p, TreeNode q) {
-    if (node == null || node.data == p.data || node.data == q.data) {
+    if (node == null || node == p || node == q) {
       return node;
     }
 
