@@ -7,32 +7,31 @@ class TreeNode {
 }
 
 void main() {
-  TreeNode? lowestCommonAncestor(TreeNode? root, TreeNode p, TreeNode q) {
-    if (root == null) {
-      return root;
+  TreeNode? lowestCommonAncestor(TreeNode? node, TreeNode p, TreeNode q) {
+    if (node == null || node.data == p.data || node.data == q.data) {
+      return node;
     }
 
-    final left = lowestCommonAncestor(root.left, p, q);
-    final right = lowestCommonAncestor(root.right, p, q);
+    final left = lowestCommonAncestor(node.left, p, q);
+    final right = lowestCommonAncestor(node.right, p, q);
 
-    if (left?.data == p.data && right?.data == q.data) {
-      return root;
-    } else if (right?.data == p.data && left?.data == q.data) {
-      return root;
-    } else if (root.data == p.data || root.data == q.data) {
-      return root;
-    } else {
-      return root;
+    if (left != null && right != null) {
+      return node;
     }
+
+    return left ?? right;
   }
 
   /// CASE 1
-  final node4 = TreeNode(data: 4);
-  final node5 = TreeNode(data: 5);
-  final node6 = TreeNode(data: 6);
-  final node7 = TreeNode(data: 7);
-  final node2 = TreeNode(data: 2, left: node4, right: node5);
-  final node3 = TreeNode(data: 3, left: node6, right: node7);
-  final node1 = TreeNode(data: 1, left: node2, right: node3);
-  print(lowestCommonAncestor(node1, node4, node5)?.data);
+  final node14 = TreeNode(data: 4);
+  final node15 = TreeNode(data: 5);
+  final node16 = TreeNode(data: 6);
+  final node17 = TreeNode(data: 7);
+  final node12 = TreeNode(data: 2, left: node14, right: node15);
+  final node13 = TreeNode(data: 3, left: node16, right: node17);
+  final node11 = TreeNode(data: 1, left: node12, right: node13);
+  print(lowestCommonAncestor(node11, node14, node15)?.data);
+
+  /// CASE 1
+  print(lowestCommonAncestor(node11, node14, node17)?.data);
 }
