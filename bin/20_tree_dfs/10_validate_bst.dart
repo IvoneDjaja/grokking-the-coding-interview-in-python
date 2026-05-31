@@ -8,11 +8,11 @@ class TreeNode {
 
 void main() {
   bool validateBst(TreeNode? node) {
-    bool dfs(TreeNode? node, int min, int max) {
+    bool dfs(TreeNode? node, num min, num max) {
       if (node == null) {
         return true;
       }
-      if (node.data < min || node.data > max) {
+      if (node.data <= min || node.data >= max) {
         return false;
       }
       final left = dfs(node.left, min, node.data);
@@ -21,7 +21,7 @@ void main() {
       return left && right;
     }
 
-    return dfs(node, 1, 500);
+    return dfs(node, double.negativeInfinity, double.infinity);
   }
 
   /// CASE 1
