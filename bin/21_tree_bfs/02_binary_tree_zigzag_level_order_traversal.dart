@@ -30,11 +30,11 @@ void main() {
           queue.add(node.right!);
         }
       }
-      var levelOutputCopy = levelOutput.sublist(0);
       if (!leftToRight) {
-        levelOutputCopy = levelOutputCopy.reversed.toList();
+        output.add(levelOutput.reversed.toList());
+      } else {
+        output.add(levelOutput);
       }
-      output.add(levelOutputCopy);
       leftToRight = !leftToRight;
     }
     return output;
