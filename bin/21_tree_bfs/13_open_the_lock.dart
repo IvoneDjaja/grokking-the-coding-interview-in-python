@@ -4,42 +4,36 @@ void main() {
   int openLock(List<String> deadends, String target) {
     final n = 4;
     var deadendsSet = deadends.toSet();
-    var digitsSet = <String>{};
-    final queue = Queue<(String, int)>()..add((target, 0));
-    for (var i = 0; i < n; i++) {
-      (String, int)? digitsFound;
-      while (queue.isNotEmpty) {
-        final item = queue.removeFirst();
-        final digits = item.$1;
-        final count = item.$2;
-        digitsSet.add(digits);
-        if (digits[i] == '0') {
-          digitsFound = (digits, count);
-          queue.clear();
-          break;
-        }
-        if (deadendsSet.contains(digits)) {
-          continue;
-        }
-        final top =
-            '${digits.substring(0, i)}${((int.parse(digits[i]) + 1) % 10).toString()}${digits.substring(i + 1, n)}';
-        final bottom =
-            '${digits.substring(0, i)}${((int.parse(digits[i]) - 1) % 10).toString()}${digits.substring(i + 1, n)}';
-        if (!digitsSet.contains(top)) {
-          queue.add((top, count + 1));
-        }
-        if (!digitsSet.contains(bottom)) {
-          queue.add((bottom, count + 1));
-        }
+    final queue = Queue<(String, int)>()..add(('0000', 0));
+    var visited = <String>{'0000'};
+    while (queue.isNotEmpty) {
+      final current = queue.removeFirst();
+      final combo = current.$1;
+      final count = current.$2;
+      if (combo == target) {
+        return count;
       }
-      queue.clear();
-      if (digitsFound != null) {
-        queue.add(digitsFound);
-      } else {
-        return -1;
+      for (var i = 0; i < n; i++) {
+        final digit = int.parse(combo[i]);
+        final up = (digit + 1) % 10;
+        final down = (digit - 1) % 10;
+
+        final prefix = combo.substring(0, i);
+        final suffix = combo.substring(i + 1);
+        final neighbors = [
+          '$prefix${up.toString()}$suffix',
+          '$prefix${down.toString()}$suffix',
+        ];
+        for (var neighbor in neighbors) {
+          if (visited.contains(neighbor) || deadendsSet.contains(neighbor)) {
+            continue;
+          }
+          visited.add(neighbor);
+          queue.add((neighbor, count + 1));
+        }
       }
     }
-    return queue.removeFirst().$2;
+    return -1;
   }
 
   /// CASE 1
@@ -75,4 +69,9 @@ void main() {
   final deadends5 = ['0010', '0090'];
   final target5 = '0020';
   print(openLock(deadends5, target5));
+
+  /// CASE 5
+  final deadends6 = ["7626", "0000", "5113", "5717"];
+  final target6 = '8954';
+  print(openLock(deadends6, target6));
 }
