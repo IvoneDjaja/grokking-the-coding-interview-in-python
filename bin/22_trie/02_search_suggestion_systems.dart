@@ -12,48 +12,46 @@ class TrieNode {
 void main() {
   List<List<String>> suggestedProducts(List<String> products, String word) {
     products.sort();
-    final output = List.generate(word.length + 1, (_) => <String>[]);
+    final output = List.generate(word.length, (_) => <String>[]);
 
-    void insert(TrieNode current, int index, String product) {
-      if (current.searchWords.length < 3) {
-        current.searchWords.add(product);
+    void insert(TrieNode root) {
+      for (var product in products) {
+        var current = root;
+        for (var i = 0; i < product.length; i++) {
+          final char = product[i];
+          final children = current.children;
+          if (!children.containsKey(char)) {
+            final node = TrieNode();
+            children[char] = node;
+          }
+          current = children[char]!;
+          if (current.searchWords.length < 3) {
+            current.searchWords.add(product);
+          }
+        }
       }
-
-      if (index == product.length) {
-        return;
-      }
-
-      final char = product[index];
-      final children = current.children;
-
-      if (!children.containsKey(char)) {
-        final node = TrieNode();
-        children[char] = node;
-      }
-      insert(children[char]!, index + 1, product);
     }
 
-    void search(TrieNode current, int index, String word) {
-      output[index] = current.searchWords;
-      if (index >= word.length) {
-        return;
-      }
-
-      final char = word[index];
-      if (current.children.containsKey(char)) {
-        final node = current.children[char];
-        search(node!, index + 1, word);
+    void search(TrieNode root) {
+      var current = root;
+      for (var i = 0; i < word.length; i++) {
+        final char = word[i];
+        final children = current.children;
+        if (children.containsKey(char)) {
+          current = children[char]!;
+          output[i] = current.searchWords;
+        } else {
+          break;
+        }
       }
     }
 
     final trieNode = TrieNode();
-    for (final product in products) {
-      insert(trieNode, 0, product);
-    }
+    insert(trieNode);
 
-    search(trieNode, 0, word);
+    search(trieNode);
 
-    return output.sublist(1);
+    return output;
   }
 
   /// CASE 1
