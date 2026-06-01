@@ -19,37 +19,46 @@ class WordDictionary {
   }
 
   bool searchWord(String word) {
-    WordDictionary current = this;
-    bool searchIndex(int index) {
+    bool dfs(WordDictionary current, int index) {
+      if (index == word.length) {
+        return current.isEndOfWord;
+      }
       final char = word[index];
       final children = current.children;
       if (char == '.') {
         for (final key in children.keys) {
-          current = children[key]!;
-          if (index == word.length - 1) {
-            return current.isEndOfWord;
-          }
-          if (searchIndex(index + 1)) {
+          if (dfs(children[key]!, index + 1)) {
             return true;
-          } else {
-            return false;
           }
         }
+        return false;
       } else {
         if (!(children.containsKey(char))) {
           return false;
         }
         current = children[char]!;
-        if (index == word.length - 1) {
-          return current.isEndOfWord;
-        }
-        return searchIndex(index + 1);
+        return dfs(current, index + 1);
       }
-
-      return false;
     }
 
-    return searchIndex(0);
+    return dfs(this, 0);
+  }
+
+  List<String> getWords() {
+    final output = <String>[];
+    void dfs(WordDictionary current, String string) {
+      if (current.isEndOfWord) {
+        output.add(string);
+      }
+      final children = current.children;
+      for (final key in children.keys) {
+        final child = children[key];
+        dfs(child!, '$string$key');
+      }
+    }
+
+    dfs(this, '');
+    return output;
   }
 }
 
@@ -63,10 +72,12 @@ void main() {
   print(wd1.searchWord('.in'));
   print(wd1.searchWord('.n'));
   print(wd1.searchWord('d.t.'));
+  print(wd1.getWords());
 
   /// CASE 2 false negative
   final wd2 = WordDictionary();
   wd2.addWord('bad');
   wd2.addWord('did');
   print(wd2.searchWord('.id'));
+  print(wd2.getWords());
 }
