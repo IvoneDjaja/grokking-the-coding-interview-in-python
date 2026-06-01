@@ -4,6 +4,9 @@ void main() {
   int openLock(List<String> deadends, String target) {
     final n = 4;
     var deadendsSet = deadends.toSet();
+    if (deadendsSet.contains('0000')) {
+      return -1;
+    }
     final queue = Queue<(String, int)>()..add(('0000', 0));
     var visited = <String>{'0000'};
     while (queue.isNotEmpty) {
