@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 class TreeNode {
   const TreeNode({required this.data, this.left, this.right});
 
@@ -14,13 +16,13 @@ void main() {
 
     final output = <String>[];
 
-    final queue = [root];
+    final queue = Queue<TreeNode>()..add(root);
     while (queue.isNotEmpty) {
-      final level = queue.sublist(0);
-      output.add(level.map((node) => node.data).join(', '));
-      queue.clear();
-      while (level.isNotEmpty) {
-        final node = level.removeAt(0);
+      final levelLength = queue.length;
+      final levelOutput = [];
+      for (var i = 0; i < levelLength; i++) {
+        final node = queue.removeFirst();
+        levelOutput.add(node.data);
         if (node.left != null) {
           queue.add(node.left!);
         }
@@ -28,6 +30,7 @@ void main() {
           queue.add(node.right!);
         }
       }
+      output.add(levelOutput.join(', '));
     }
 
     return output.join(' : ');
