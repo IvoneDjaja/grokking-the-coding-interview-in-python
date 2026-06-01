@@ -11,10 +11,14 @@ class TrieNode {
 
 void main() {
   List<List<String>> suggestedProducts(List<String> products, String word) {
-    final output = <List<String>>[];
+    products.sort();
+    final output = List.generate(word.length + 1, (_) => <String>[]);
 
     void insert(TrieNode current, int index, String product) {
-      current.searchWords.add(product);
+      if (current.searchWords.length < 3) {
+        current.searchWords.add(product);
+      }
+
       if (index == product.length) {
         return;
       }
@@ -30,20 +34,16 @@ void main() {
     }
 
     void search(TrieNode current, int index, String word) {
-      if (index > 0) {
-        output.add(
-          current.searchWords.sublist(0, min(current.searchWords.length, 3)),
-        );
-      }
+      output[index] = current.searchWords;
       if (index >= word.length) {
         return;
       }
+
       final char = word[index];
-      if (!current.children.containsKey(char)) {
-        return;
+      if (current.children.containsKey(char)) {
+        final node = current.children[char];
+        search(node!, index + 1, word);
       }
-      final node = current.children[char];
-      search(node!, index + 1, word);
     }
 
     final trieNode = TrieNode();
@@ -53,7 +53,7 @@ void main() {
 
     search(trieNode, 0, word);
 
-    return output;
+    return output.sublist(1);
   }
 
   /// CASE 1
