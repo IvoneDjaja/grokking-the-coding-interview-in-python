@@ -4,38 +4,39 @@ void main() {
   int maxSubstringLength(String s) {
     final first = <String, int>{};
     final last = <String, int>{};
+    final n = s.length;
 
-    // 1. Record first and last occurrence of each character
-    for (var i = 0; i < s.length; i++) {
+    // 1. Record the absolute boundaries for each character
+    for (var i = 0; i < n; i++) {
       first.putIfAbsent(s[i], () => i);
       last[s[i]] = i;
     }
 
     var maxLength = -1;
 
-    // 2. Iterate through every possible starting character position 'i'
-    for (var i = 0; i < s.length; i++) {
-      // A self-contained substring MUST start at the first appearance of its first character.
-      if (i != first[s[i]]) continue;
+    // 2. Iterate through every character's absolute first appearance
+    for (final char in first.keys) {
+      final i = first[char]!;
+      var mx = last[char]!;
 
-      var end = last[s[i]]!;
-      var isValid = true;
+      // Scan all the way to the end of the string, dynamically expanding 'mx'
+      for (var j = i; j < n; j++) {
+        final a = first[s[j]]!;
+        final b = last[s[j]]!;
 
-      // 3. Expand the window dynamically for all nested characters
-      for (var j = i; j <= end; j++) {
-        // If an internal character appeared before our start index 'i',
-        // then this 'i' can never be a valid starting boundary.
-        if (first[s[j]]! < i) {
-          isValid = false;
+        // If an inner character appears BEFORE our start index, this window is broken
+        if (a < i) {
           break;
         }
-        // Expand the right boundary to include all occurrences of the nested character
-        end = max(end, last[s[j]]!);
-      }
 
-      // 4. Update max length ONLY if it's not the entire string
-      if (isValid && !(i == 0 && end == s.length - 1)) {
-        maxLength = max(maxLength, end - i + 1);
+        // Expand the window boundary to capture all instances of the new character
+        mx = max(mx, b);
+
+        // CRITICAL CHECK: If our scan index 'j' matches the current expanded max boundary,
+        // and it's a proper substring (less than full length 'n'), update the max length.
+        if (mx == j && (j - i + 1) < n) {
+          maxLength = max(maxLength, j - i + 1);
+        }
       }
     }
 
