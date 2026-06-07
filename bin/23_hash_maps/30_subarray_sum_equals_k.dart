@@ -9,7 +9,7 @@ void main() {
       if (prefixSum.containsKey(prefix - k)) {
         count += prefixSum[prefix - k]!;
       }
-      prefixSum[prefix] = (prefixSum[prefix - k] ?? 0) + 1;
+      prefixSum[prefix] = (prefixSum[prefix] ?? 0) + 1;
     }
 
     return count;
