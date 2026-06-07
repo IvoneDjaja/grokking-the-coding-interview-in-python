@@ -1,56 +1,57 @@
-void main() {
-  bool isValidSudoku(List<List<String>> board) {
-    final length = 9;
-    final rowSet = <int, Set<String>>{};
-    final colSet = <int, Set<String>>{};
-    final boxSet = <int, Set<String>>{};
+import 'dart:math';
 
-    for (var i = 0; i < length; i++) {
-      rowSet[i] = {};
-      colSet[i] = {};
-      boxSet[i] = {};
+void main() {
+  int maxSubstringLength(String s) {
+    final substringMap = <String, List<int>>{};
+    var maxLength = -1;
+
+    // Create substring
+    for (var i = 0; i < s.length; i++) {
+      final char = s[i];
+      substringMap.update(char, (value) {
+        value[1] = i;
+        return value;
+      }, ifAbsent: () => [i, i]);
     }
 
-    for (var i = 0; i < length; i++) {
-      for (var j = 0; j < length; j++) {
-        final digit = board[i][j];
-        if (digit == '.') {
-          continue;
+    // Validate substring
+    for (var char in substringMap.keys) {
+      final interval = substringMap[char]!;
+      final start = interval.first;
+      final end = interval.last;
+      var index = start;
+      print('interval: $interval');
+      while (index < end + 1) {
+        final current = substringMap[s[index]];
+        final currentEnd = current!.last;
+        print('currentEnd: $currentEnd');
+        if (currentEnd > end || currentEnd == s.length - 1) {
+          print('break');
+          break;
         }
-        final b = (i ~/ 3) * 3 + (j ~/ 3);
-
-        final row = rowSet[i]!;
-        final col = colSet[j]!;
-        final box = boxSet[b]!;
-        if (row.contains(digit)) {
-          return false;
-        }
-        if (col.contains(digit)) {
-          return false;
-        }
-        if (box.contains(digit)) {
-          return false;
-        }
-        rowSet[i]!.add(digit);
-        colSet[j]!.add(digit);
-        boxSet[b]!.add(digit);
+        index += 1;
+      }
+      if (index >= end) {
+        maxLength = max(maxLength, end - start + 1);
       }
     }
 
-    return true;
+    return maxLength;
   }
 
   /// CASE 1
-  final board1 = [
-    [".", ".", ".", ".", ".", ".", ".", "7", "."],
-    ["2", "7", "5", ".", ".", ".", "3", "1", "4"],
-    [".", ".", ".", ".", "2", "7", ".", "5", "."],
-    ["9", "8", ".", ".", ".", ".", ".", "3", "1"],
-    [".", "3", "1", "8", ".", "4", ".", ".", "."],
-    [".", ".", ".", "1", ".", ".", "8", ".", "5"],
-    ["7", ".", "6", "2", ".", ".", "1", "8", "."],
-    [".", "9", ".", "7", ".", ".", ".", ".", "."],
-    ["4", "1", ".", ".", ".", "5", ".", ".", "7"],
-  ];
-  print(isValidSudoku(board1));
+  final string1 = 'xyyx';
+  print(maxSubstringLength(string1));
+
+  /// CASE 2
+  final string2 = 'xyxy';
+  print(maxSubstringLength(string2));
+
+  /// CASE 3
+  final string3 = 'abacd';
+  print(maxSubstringLength(string3));
+
+  /// CASE 4
+  final string4 = 'aabbcc';
+  print(maxSubstringLength(string4));
 }
