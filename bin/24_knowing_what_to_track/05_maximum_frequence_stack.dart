@@ -1,31 +1,30 @@
+import 'dart:math';
+
 class FreqStack {
-  late List<List<int>> maxStack;
-  late Map<int, int> countMap;
+  late Map<int, int> valCountMap;
+  late Map<int, List<int>> countValsMap;
+  late int maxFrequency;
+
   void init() {
-    maxStack = [];
-    countMap = {};
+    valCountMap = {};
+    countValsMap = {};
+    maxFrequency = 0;
   }
 
   void push(int value) {
-    final count = (countMap[value] ?? 0) + 1;
-    countMap[value] = count;
-    if (maxStack.isNotEmpty) {
-      final prev = maxStack.last;
-      if (prev.last > count) {
-        maxStack.add([prev.first, prev.last]);
-      } else {
-        maxStack.add([value, count]);
-      }
-    } else {
-      maxStack.add([value, count]);
-    }
+    final count = (valCountMap[value] ?? 0) + 1;
+    valCountMap[value] = count;
+    countValsMap[count] = (countValsMap[count] ?? [])..add(value);
+    maxFrequency = max(maxFrequency, count);
   }
 
   int pop() {
-    final current = maxStack.removeLast();
-    final value = current.first;
-    countMap[value] = countMap[value]! - 1;
-    return value;
+    final vals = countValsMap[maxFrequency];
+    final val = vals!.removeLast();
+    countValsMap[maxFrequency] = vals;
+    valCountMap[val] = valCountMap[val]! - 1;
+    maxFrequency -= 1;
+    return val;
   }
 }
 
