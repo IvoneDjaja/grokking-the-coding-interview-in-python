@@ -22,8 +22,13 @@ class FreqStack {
     final vals = countValsMap[maxFrequency];
     final val = vals!.removeLast();
     countValsMap[maxFrequency] = vals;
-    valCountMap[val] = valCountMap[val]! - 1;
-    maxFrequency -= 1;
+    if (vals.isEmpty) {
+      maxFrequency -= 1;
+    }
+
+    final count = valCountMap[val]! - 1;
+    valCountMap[val] = count;
+
     return val;
   }
 }
