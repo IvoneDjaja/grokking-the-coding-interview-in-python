@@ -1,33 +1,31 @@
 import 'dart:math';
 
 class FreqStack {
-  late Map<int, int> valCountMap;
-  late Map<int, List<int>> countValsMap;
-  late int maxFrequency;
-
-  void init() {
-    valCountMap = {};
-    countValsMap = {};
-    maxFrequency = 0;
-  }
+  late Map<int, int> valCountMap = {};
+  late Map<int, List<int>> countValsMap = {};
+  late int maxFrequency = 0;
 
   void push(int value) {
     final count = (valCountMap[value] ?? 0) + 1;
     valCountMap[value] = count;
-    countValsMap[count] = (countValsMap[count] ?? [])..add(value);
     maxFrequency = max(maxFrequency, count);
+    countValsMap.putIfAbsent(count, () => []).add(value);
   }
 
   int pop() {
     final vals = countValsMap[maxFrequency];
     final val = vals!.removeLast();
-    countValsMap[maxFrequency] = vals;
     if (vals.isEmpty) {
+      countValsMap.remove(maxFrequency);
       maxFrequency -= 1;
     }
 
     final count = valCountMap[val]! - 1;
-    valCountMap[val] = count;
+    if (count == 0) {
+      valCountMap.remove(val);
+    } else {
+      valCountMap[val] = count;
+    }
 
     return val;
   }
@@ -35,7 +33,7 @@ class FreqStack {
 
 void main() {
   /// CASE 1
-  final freqStack1 = FreqStack()..init();
+  final freqStack1 = FreqStack();
   freqStack1.push(2);
   freqStack1.push(4);
   freqStack1.push(5);
@@ -45,7 +43,7 @@ void main() {
   print(freqStack1.pop());
 
   /// CASE 2
-  final freqStack2 = FreqStack()..init();
+  final freqStack2 = FreqStack();
   freqStack2.push(6);
   freqStack2.push(8);
   freqStack2.push(9);
@@ -55,7 +53,7 @@ void main() {
   print(freqStack2.pop());
 
   /// CASE 3
-  final freqStack3 = FreqStack()..init();
+  final freqStack3 = FreqStack();
   freqStack3.push(5);
   freqStack3.push(5);
   freqStack3.push(7);
