@@ -1,34 +1,38 @@
 void main() {
-  int findAnagrams(String a, String b) {
-    var output = -1;
+  List<int> findAnagrams(String a, String b) {
+    var output = <int>[];
     if (b.length > a.length) {
       return output;
     }
 
-    List<int> createKey(String string) {
-      final stringMap = List.generate(26, (_) => 0);
-      for (var i = 0; i < string.length; i++) {
-        final char = string[i];
-        stringMap[char.codeUnitAt(0) - 97] += 1;
+    bool isMapEqual(List<int> l1, List<int> l2) {
+      for (var i = 0; i < 26; i++) {
+        if (l1[i] != l2[i]) {
+          return false;
+        }
       }
-      return stringMap;
+      return true;
+    }
+
+    final aCount = List<int>.filled(26, 0);
+    final bCount = List<int>.filled(26, 0);
+    for (var i = 0; i < b.length; i++) {
+      bCount[b.codeUnitAt(i) - 97] += 1;
+      aCount[a.codeUnitAt(i) - 97] += 1;
     }
 
     var start = 0;
-    var end = b.length - 1;
-    final aKey = createKey(a.substring(start, b.length));
-    final bKey = createKey(b);
-    while (end < a.length) {
-      if (aKey.toString() == bKey.toString()) {
-        output = start;
-        return output;
+    var end = b.length;
+    while (end <= a.length) {
+      if (isMapEqual(aCount, bCount)) {
+        output.add(start);
       }
-      aKey[(a[start].codeUnitAt(0)) - 97] -= 1;
+      if (end < a.length) {
+        aCount[a.codeUnitAt(start) - 97] -= 1;
+        aCount[a.codeUnitAt(end) - 97] += 1;
+      }
       start += 1;
       end += 1;
-      if (end < a.length) {
-        aKey[(a[end].codeUnitAt(0)) - 97] += 1;
-      }
     }
 
     return output;
