@@ -32,22 +32,28 @@ void main() {
       final i = id ~/ n;
       final j = id % n;
 
-      final up = [i + 1, j];
-      final down = [i - 1, j];
-      final left = [i, j - 1];
-      final right = [i, j + 1];
+      final directions = [
+        [1, 0],
+        [-1, 0],
+        [0, -1],
+        [0, 1],
+      ];
 
-      for (var neighbor in [up, down, left, right]) {
-        final neighborId = neighbor.first * n + neighbor.last;
-        if (parentMap.containsKey(neighborId)) {
-          union(neighborId, id);
+      for (var dir in directions) {
+        final ni = i + dir[0];
+        final nj = j + dir[1];
+        if (ni >= 0 && ni < m && nj >= 0 && nj < n) {
+          final neighborId = ni * n + nj;
+          if (parentMap.containsKey(neighborId)) {
+            union(neighborId, id);
+          }
         }
       }
     }
 
     final ids = <int>{};
     for (var id in parentMap.values) {
-      ids.add(id);
+      ids.add(findRoot(id));
     }
 
     return ids.length;
