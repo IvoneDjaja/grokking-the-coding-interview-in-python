@@ -2,42 +2,40 @@ import 'dart:math';
 
 void main() {
   int longestConsecutiveSequence(List<int> nums) {
+    if (nums.isEmpty) return 0;
+
     final parentMap = <int, int>{};
 
     int findParent(int num) {
-      var start = num;
-      while (parentMap[start] != start) {
-        start = parentMap[start]!;
+      if (parentMap[num] == num) return num;
+      return parentMap[num] = findParent(parentMap[num]!);
+    }
+
+    void union(int u, int v) {
+      int rootU = findParent(u);
+      int rootV = findParent(v);
+      if (rootU != rootV) {
+        parentMap[rootU] = rootV;
       }
-      return start;
     }
 
     for (var num in nums) {
-      parentMap.putIfAbsent(num, () => 0);
       parentMap[num] = num;
     }
 
-    final queue = parentMap.keys.toList();
-    while (queue.isNotEmpty) {
-      final num = queue.removeAt(0);
-      if (num == parentMap[num]) {
-        if (parentMap.containsValue(num - 1)) {
-          parentMap[num - 1] = findParent(num);
-        }
-        if (parentMap.containsValue(num + 1)) {
-          parentMap[num + 1] = findParent(num);
-        }
+    for (var num in parentMap.keys) {
+      if (parentMap.containsKey(num + 1)) {
+        union(num, num + 1);
       }
     }
 
     var maxLength = 0;
     final countMap = <int, int>{};
     for (var key in parentMap.keys) {
-      final value = parentMap[key]!;
-      countMap.putIfAbsent(value, () => 0);
-      final count = countMap[value]! + 1;
+      final root = findParent(key);
+      final count = (countMap[root] ?? 0) + 1;
+      countMap[root] = count;
       maxLength = max(maxLength, count);
-      countMap[value] = count;
     }
 
     return maxLength;
