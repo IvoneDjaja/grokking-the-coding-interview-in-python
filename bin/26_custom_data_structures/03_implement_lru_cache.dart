@@ -18,33 +18,46 @@ class LRUCache {
   LinkedListNode? root;
 
   int get(int key) {
-    if (length == 0) {
+    if (length == 0 || root == null) {
       return -1;
     }
-    length -= 1;
     int val = -1;
     LinkedListNode? node;
-    if (root?.first == key) {
-      val = root?.second ?? -1;
+    if (root!.first == key) {
+      val = root!.second ?? -1;
       node = root;
-      final next = root?.next;
-      root = next;
-      next?.prev = null;
+      if (root!.next == null) {
+        return val;
+      }
+      root = root?.next;
+      root!.prev = null;
     } else {
       var current = root;
       while (current != null) {
         if (current.first == key) {
           val = current.second!;
           node = current;
+          if (current.next == null) {
+            return val;
+          }
           final prev = current.prev;
           final next = current.next;
           prev?.next = next;
-          next?.prev = prev;
+          if (next != null) {
+            next.prev = prev;
+          }
           break;
         }
         current = current.next;
       }
     }
+
+    if (node == null) {
+      return -1;
+    }
+    node.next = null;
+    node.prev = null;
+
     var current = root;
     if (root == null) {
       root = node;
@@ -53,19 +66,29 @@ class LRUCache {
         current = current?.next;
       }
       current?.next = node;
+      node.prev = current;
     }
 
     return val;
   }
 
   void set(int key, int value) {
+    LinkedListNode? current = root;
+    while (current != null) {
+      if (current.first == key) {
+        current.pair = [key, value];
+        get(key);
+        return;
+      }
+      current = current.next;
+    }
     length += 1;
     final node = LinkedListNode(pair: [key, value]);
     if (root == null) {
       root = node;
       return;
     }
-    var current = root;
+    current = root;
     while (current?.next != null) {
       current = current?.next;
     }
@@ -74,8 +97,12 @@ class LRUCache {
 
     if (length > capacity) {
       final next = root?.next;
-      root = next;
-      root?.prev = null;
+      if (next != null) {
+        root = next;
+        root?.prev = null;
+      } else {
+        root = null;
+      }
       length -= 1;
     }
   }
