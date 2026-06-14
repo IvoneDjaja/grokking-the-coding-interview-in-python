@@ -1,6 +1,7 @@
 void main() {
   List<int> numIslands2(int m, int n, List<List<int>> positions) {
     final parentMap = <int, int>{};
+    var islandCount = 0;
 
     int findRoot(int id) {
       if (id == parentMap[id]) {
@@ -14,6 +15,7 @@ void main() {
       final rootV = findRoot(v);
       if (rootU != rootV) {
         parentMap[rootU] = rootV;
+        islandCount -= 1;
       }
     }
 
@@ -25,33 +27,32 @@ void main() {
     ];
 
     final output = <int>[];
+
     for (var position in positions) {
       final row = position.first;
       final col = position.last;
-
       final id = row * n + col;
-      parentMap[id] = id;
 
-      for (var key in parentMap.keys) {
-        final id = parentMap[key]!;
-        final row = id ~/ n;
-        final col = id % n;
-        for (var direction in directions) {
-          final nr = row + direction.first;
-          final nc = col + direction.last;
+      // Handle duplicate position drops safely
+      if (parentMap.containsKey(id)) {
+        output.add(islandCount);
+        continue;
+      }
+
+      parentMap[id] = id;
+      islandCount += 1;
+
+      for (var direction in directions) {
+        final nr = row + direction.first;
+        final nc = col + direction.last;
+        if (nr >= 0 && nr < m && nc >= 0 && nc < n) {
           final nid = nr * n + nc;
           if (parentMap.keys.contains(nid)) {
             union(id, nid);
           }
         }
       }
-
-      final ids = <int>{};
-      for (var key in parentMap.keys) {
-        final id = findRoot(key);
-        ids.add(id);
-      }
-      output.add(ids.length);
+      output.add(islandCount);
     }
 
     return output;
