@@ -16,40 +16,53 @@ class LRUCache {
     end = LinkedListNode(pair: [-1, -1]);
     start!.next = end!;
     end!.prev = start!;
+    cache = <int, LinkedListNode>{};
   }
 
   final int capacity;
   int length = 0;
   LinkedListNode? start;
   LinkedListNode? end;
+  late Map<int, LinkedListNode> cache;
 
   int get(int key) {
-    var current = start!.next;
-    while (current!.key != -1) {
-      if (current.key == key) {
-        final output = current.value!;
-        final prev = current.prev;
-        final next = current.next;
-        prev?.next = next;
-        next?.prev = prev;
-        final last = end?.prev;
-        last?.next = current;
-        current.prev = last;
-        current.next = end;
-        end?.prev = current;
-        return output;
-      }
-      current = current.next;
+    if (!cache.containsKey(key)) {
+      return -1;
     }
-    return -1;
+    var current = cache[key]!;
+    final prev = current.prev;
+    final next = current.next;
+    prev?.next = next;
+    next?.prev = prev;
+    final last = end?.prev;
+    last?.next = current;
+    current.prev = last;
+    current.next = end;
+    end?.prev = current;
+    return current.value!;
   }
 
   void set(int key, int value) {
+    if (cache.containsKey(key)) {
+      final current = cache[key];
+      current?.pair = [key, value];
+      final prev = current?.prev;
+      final next = current?.next;
+      prev?.next = next;
+      next?.prev = prev;
+      final last = end?.prev;
+      last?.next = current;
+      current?.prev = last;
+      current?.next = end;
+      end?.prev = current;
+      return;
+    }
     final last = end!.prev;
     final newNode = LinkedListNode(pair: [key, value], next: end, prev: last);
     last!.next = newNode;
     end!.prev = newNode;
 
+    cache[key] = newNode;
     length += 1;
 
     if (length > capacity) {
@@ -57,6 +70,7 @@ class LRUCache {
       final next = first!.next;
       start!.next = next;
       next?.prev = start;
+      cache.remove(first.key);
       length -= 1;
     }
   }
