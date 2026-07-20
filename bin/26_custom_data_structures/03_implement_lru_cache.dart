@@ -27,7 +27,17 @@ class LRUCache {
     var current = start!.next;
     while (current!.key != -1) {
       if (current.key == key) {
-        return current.value!;
+        final output = current.value!;
+        final prev = current.prev;
+        final next = current.next;
+        prev?.next = next;
+        next?.prev = prev;
+        final last = end?.prev;
+        last?.next = current;
+        current.prev = last;
+        current.next = end;
+        end?.prev = current;
+        return output;
       }
       current = current.next;
     }
@@ -46,6 +56,8 @@ class LRUCache {
       final first = start!.next;
       final next = first!.next;
       start!.next = next;
+      next?.prev = start;
+      length -= 1;
     }
   }
 }
@@ -60,4 +72,19 @@ void main() {
   print(lruCache1.get(1));
   print(lruCache1.get(3));
   print(lruCache1.get(2));
+
+  /// CASE 2
+  final lruCache2 = LRUCache(capacity: 2);
+  print(lruCache2.get(10));
+  lruCache2.set(10, 100);
+  print(lruCache2.get(10));
+  lruCache2.set(15, 50);
+  print(lruCache2.get(10));
+  lruCache2.set(30, 300);
+  print(lruCache2.get(15));
+  print(lruCache2.get(30));
+
+  /// CASE 3 (151/156)
+  // ["LRUCache","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get"]
+  // ["LRUCache","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","set","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get","get"]
 }
