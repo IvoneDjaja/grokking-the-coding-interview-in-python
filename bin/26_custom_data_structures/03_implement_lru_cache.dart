@@ -5,105 +5,47 @@ class LinkedListNode {
   LinkedListNode? next;
   LinkedListNode? prev;
 
-  int? get first => pair?.first;
+  int? get key => pair?.first;
 
-  int? get second => pair?.last;
+  int? get value => pair?.last;
 }
 
 class LRUCache {
-  LRUCache({required this.capacity});
+  LRUCache({required this.capacity}) {
+    start = LinkedListNode(pair: [-1, -1]);
+    end = LinkedListNode(pair: [-1, -1]);
+    start!.next = end!;
+    end!.prev = start!;
+  }
 
   final int capacity;
   int length = 0;
-  LinkedListNode? root;
+  LinkedListNode? start;
+  LinkedListNode? end;
 
   int get(int key) {
-    if (length == 0 || root == null) {
-      return -1;
-    }
-    int val = -1;
-    LinkedListNode? node;
-    if (root!.first == key) {
-      val = root!.second ?? -1;
-      node = root;
-      if (root!.next == null) {
-        return val;
-      }
-      root = root?.next;
-      root!.prev = null;
-    } else {
-      var current = root;
-      while (current != null) {
-        if (current.first == key) {
-          val = current.second!;
-          node = current;
-          if (current.next == null) {
-            return val;
-          }
-          final prev = current.prev;
-          final next = current.next;
-          prev?.next = next;
-          if (next != null) {
-            next.prev = prev;
-          }
-          break;
-        }
-        current = current.next;
-      }
-    }
-
-    if (node == null) {
-      return -1;
-    }
-    node.next = null;
-    node.prev = null;
-
-    var current = root;
-    if (root == null) {
-      root = node;
-    } else {
-      while (current?.next != null) {
-        current = current?.next;
-      }
-      current?.next = node;
-      node.prev = current;
-    }
-
-    return val;
-  }
-
-  void set(int key, int value) {
-    LinkedListNode? current = root;
-    while (current != null) {
-      if (current.first == key) {
-        current.pair = [key, value];
-        get(key);
-        return;
+    var current = start!.next;
+    while (current!.key != -1) {
+      if (current.key == key) {
+        return current.value!;
       }
       current = current.next;
     }
+    return -1;
+  }
+
+  void set(int key, int value) {
+    final last = end!.prev;
+    final newNode = LinkedListNode(pair: [key, value], next: end, prev: last);
+    last!.next = newNode;
+    end!.prev = newNode;
+
     length += 1;
-    final node = LinkedListNode(pair: [key, value]);
-    if (root == null) {
-      root = node;
-      return;
-    }
-    current = root;
-    while (current?.next != null) {
-      current = current?.next;
-    }
-    current?.next = node;
-    node.prev = current;
 
     if (length > capacity) {
-      final next = root?.next;
-      if (next != null) {
-        root = next;
-        root?.prev = null;
-      } else {
-        root = null;
-      }
-      length -= 1;
+      final first = start!.next;
+      final next = first!.next;
+      start!.next = next;
     }
   }
 }
