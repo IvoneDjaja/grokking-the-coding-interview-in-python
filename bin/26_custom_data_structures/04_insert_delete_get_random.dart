@@ -3,38 +3,35 @@ import 'dart:math';
 class RandomSet {
   RandomSet();
 
-  final Set<int> nums = {};
+  final Map<int, int> numSet = {};
+  final List<int> numList = [];
+  final Random random = Random();
 
   bool insert(int val) {
-    if (nums.contains(val)) {
+    if (numSet.containsKey(val)) {
       return false;
     }
-    nums.add(val);
+    numSet[val] = numList.length;
+    numList.add(val);
     return true;
   }
 
   bool delete(int val) {
-    if (!nums.contains(val)) {
+    if (!numSet.containsKey(val)) {
       return false;
     }
-    nums.remove(val);
+    final index = numSet[val]!;
+    final lastVal = numList.last;
+    numList[index] = lastVal;
+    numSet[lastVal] = index;
+    numList.removeLast();
+    numSet.remove(val);
+
     return true;
   }
 
   int getRandom() {
-    final range = Random();
-
-    late int result;
-
-    var i = 0;
-    for (var num in nums) {
-      i++;
-      if (range.nextInt(i) == 0) {
-        result = num;
-      }
-    }
-
-    return result;
+    return numList[random.nextInt(numList.length)];
   }
 }
 
