@@ -14,19 +14,28 @@ void main() {
     while (current1 != null && current2 != null) {
       final val1 = current1.val;
       final val2 = current2.val;
-      final total = val1 + val2;
-      final result = (total + carry) % 10;
-      current?.next = ListNode(val: result);
+      final total = val1 + val2 + carry;
+      final result = total % 10;
       carry = total ~/ 10;
-      current = head.next;
+      current?.next = ListNode(val: result);
+      current = current?.next;
       current1 = current1.next;
       current2 = current2.next;
     }
 
-    if (current1 != null) {
-      head.next = current1;
-    } else if (current2 != null) {
-      head.next = current2;
+    var remaining = current1 ?? current2;
+
+    while (remaining != null) {
+      final total = remaining.val + carry;
+      final result = total % 10;
+      carry = total ~/ 10;
+      current?.next = ListNode(val: result);
+      current = current?.next;
+      remaining = remaining.next;
+    }
+
+    if (carry > 0) {
+      current?.next = ListNode(val: carry);
     }
 
     return head.next;
@@ -35,8 +44,45 @@ void main() {
   /// CASE 1
   final input11 = ListNode(val: 3, next: ListNode(val: 5));
   final input12 = ListNode(val: 1, next: ListNode(val: 4));
-  final output1 = addTwoNumbers(input11, input12);
-  print(output1?.val);
-  print(output1?.next?.val);
-  print(output1?.next?.next?.val);
+  var output1 = addTwoNumbers(input11, input12);
+  while (output1 != null) {
+    print(output1.val);
+    output1 = output1.next;
+  }
+
+  /// CASE 2
+  final input21 = ListNode(val: 8);
+  final input22 = ListNode(val: 9, next: ListNode(val: 9));
+  var output2 = addTwoNumbers(input21, input22);
+  while (output2 != null) {
+    print(output2.val);
+    output2 = output2.next;
+  }
+
+  /// CASE 3
+  final input31 = ListNode(val: 1, next: ListNode(val: 2));
+  final input32 = ListNode(val: 0);
+  var output3 = addTwoNumbers(input31, input32);
+  while (output3 != null) {
+    print(output3.val);
+    output3 = output3.next;
+  }
+
+  /// CASE 4
+  final input41 = ListNode(val: 0);
+  final input42 = ListNode(val: 0);
+  var output4 = addTwoNumbers(input41, input42);
+  while (output4 != null) {
+    print(output4.val);
+    output4 = output4.next;
+  }
+
+  /// CASE 5
+  final input51 = ListNode(val: 9, next: ListNode(val: 9));
+  final input52 = ListNode(val: 7, next: ListNode(val: 7));
+  var output5 = addTwoNumbers(input51, input52);
+  while (output5 != null) {
+    print(output5.val);
+    output5 = output5.next;
+  }
 }
