@@ -11,33 +11,17 @@ void main() {
     var carry = 0;
     ListNode? head = ListNode(val: -1);
     ListNode? current = head;
-    while (current1 != null && current2 != null) {
-      final val1 = current1.val;
-      final val2 = current2.val;
+    while (current1 != null || current2 != null || carry > 0) {
+      final val1 = current1?.val ?? 0;
+      final val2 = current2?.val ?? 0;
       final total = val1 + val2 + carry;
       final result = total % 10;
       carry = total ~/ 10;
       current?.next = ListNode(val: result);
       current = current?.next;
-      current1 = current1.next;
-      current2 = current2.next;
+      current1 = current1?.next;
+      current2 = current2?.next;
     }
-
-    var remaining = current1 ?? current2;
-
-    while (remaining != null) {
-      final total = remaining.val + carry;
-      final result = total % 10;
-      carry = total ~/ 10;
-      current?.next = ListNode(val: result);
-      current = current?.next;
-      remaining = remaining.next;
-    }
-
-    if (carry > 0) {
-      current?.next = ListNode(val: carry);
-    }
-
     return head.next;
   }
 
