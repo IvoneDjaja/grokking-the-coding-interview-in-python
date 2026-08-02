@@ -6,10 +6,10 @@ void main() {
     var current = num;
     while (current > 0) {
       final remainder = current % 10;
+      reversed = (reversed * 10) + remainder;
       if (reversed > pow(2, 31) - 1 || reversed < -pow(2, 31)) {
         return 0;
       }
-      reversed = (reversed * 10) + remainder;
       current ~/= 10;
     }
 
@@ -27,4 +27,7 @@ void main() {
 
   /// CASE 4
   print(reverse(0));
+
+  /// CASE 5
+  print(reverse(1534536429));
 }
