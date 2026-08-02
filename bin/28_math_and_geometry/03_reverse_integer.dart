@@ -2,20 +2,15 @@ import 'dart:math';
 
 void main() {
   int reverse(int num) {
-    var digitCount = 0;
+    var reversed = 0;
     var current = num;
     while (current > 0) {
-      current ~/= 10;
-      digitCount += 1;
-    }
-    var reversed = 0;
-    var initial = pow(10, digitCount - 1).toInt();
-    current = num;
-    while (current > 0) {
       final remainder = current % 10;
-      reversed += (remainder * initial);
+      if (reversed > pow(2, 31) - 1 || reversed < -pow(2, 31)) {
+        return 0;
+      }
+      reversed = (reversed * 10) + remainder;
       current ~/= 10;
-      initial ~/= 10;
     }
 
     return reversed;
