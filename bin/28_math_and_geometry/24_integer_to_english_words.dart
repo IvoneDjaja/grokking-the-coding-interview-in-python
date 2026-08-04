@@ -37,7 +37,6 @@ void main() {
     };
 
     final thousandMultiplesMap = <int, String>{
-      1: '',
       1000: 'Thousand',
       1000000: 'Million',
       1000000000: 'Billion',
@@ -57,11 +56,15 @@ void main() {
           current %= 10;
         } else if (current < 1000) {
           final quotient = current ~/ 100;
-          output.add('${lessThanTwentyMap[quotient]!} hundred');
+          output.add('${lessThanTwentyMap[quotient]!} Hundred');
           current %= 100;
         }
       }
       return output.join(' ');
+    }
+
+    if (current == 0) {
+      return 'Zero';
     }
 
     // 2147483647
@@ -71,7 +74,9 @@ void main() {
 
       if (quotient > 0) {
         output.add(processLessThanThousand(quotient));
-        output.add(thousandMultiplesMap[divisor]!);
+        if (divisor > 1) {
+          output.add(thousandMultiplesMap[divisor]!);
+        }
       }
 
       current %= divisor;
