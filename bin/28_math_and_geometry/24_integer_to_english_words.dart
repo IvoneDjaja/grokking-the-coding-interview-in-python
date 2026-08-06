@@ -33,31 +33,32 @@ void main() {
   };
 
   final thousandMultiplesMap = <int, String>{
-    1000: 'Thousand',
-    1000000: 'Million',
-    1000000000: 'Billion',
+    1: 'Thousand',
+    2: 'Million',
+    3: 'Billion',
   };
   String numberToWords(int num) {
-    var output = <String>[];
     var current = num;
 
-    void processLessThanThousand(int num) {
+    List<String> processLessThanThousand(int num) {
       var current = num;
-      while (current > 0) {
-        // less than 100
-        if (current < 20) {
-          output.add(lessThanTwentyMap[current]!);
-          break;
-        } else if (current < 100) {
-          final quotient = current ~/ 10;
-          output.add(tenMultiplesMap[quotient]!);
-          current %= 10;
-        } else if (current < 1000) {
-          final quotient = current ~/ 100;
-          output.add('${lessThanTwentyMap[quotient]!} Hundred');
-          current %= 100;
-        }
+      final chunk = <String>[];
+      if (current == 0) {
+        return [];
+      } else if (current < 20) {
+        chunk.add(lessThanTwentyMap[current]!);
+      } else if (current < 100) {
+        final quotient = current ~/ 10;
+        chunk.add(tenMultiplesMap[quotient]!);
+        final remainder = current % 10;
+        chunk.addAll(processLessThanThousand(remainder));
+      } else if (current < 1000) {
+        final quotient = current ~/ 100;
+        chunk.add('${lessThanTwentyMap[quotient]!} Hundred');
+        final remainder = current % 100;
+        chunk.addAll(processLessThanThousand(remainder));
       }
+      return chunk;
     }
 
     if (current == 0) {
@@ -65,19 +66,20 @@ void main() {
     }
 
     // 2147483647
-    var divisor = 1000000000;
+    var i = 0;
+    final output = <String>[];
     while (current > 0) {
-      final quotient = current ~/ divisor;
+      final remainder = current % 1000;
 
-      if (quotient > 0) {
-        processLessThanThousand(quotient);
-        if (divisor > 1) {
-          output.add(thousandMultiplesMap[divisor]!);
+      if (remainder > 0) {
+        final words = processLessThanThousand(remainder);
+        if (i > 0) {
+          words.add(thousandMultiplesMap[i]!);
         }
+        output.insert(0, words.join(' '));
       }
-
-      current %= divisor;
-      divisor ~/= 1000;
+      current ~/= 1000;
+      i += 1;
     }
 
     return output.join(' ');
