@@ -9,10 +9,14 @@ def container_with_most_water(height):
         heightEnd = height[end]
         water = min(heightStart, heightEnd) * (end - start)
         maxWater = max(maxWater, water)
-        if start < end:
+        if heightStart < heightEnd:
             start += 1
+            newHeightStart = height[start]
+            maxWater = max(maxWater, min(heightStart, newHeightStart))
         else:
             end -= 1
+            newHeightEnd= height[end]
+            maxWater = max(maxWater, min(heightEnd, newHeightEnd))
     return maxWater
 
 # CASE 5
