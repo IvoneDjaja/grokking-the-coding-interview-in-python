@@ -5,21 +5,41 @@ class ListNode:
         self.val = val
         self.next = next
 
+import heapq
+
 def merge_k_lists(lists):
-    min_heap = []
-    heapq.heapify(min_heap)
+    if len(lists) == 0:
+        return None
 
-    for list in lists:
-        current = list
-        while current is not None:
-            heapq.heappush(min_heap, current.val)
-            current = current.next
+    merged = [lists[0]]
+    for i in range(1, len(lists)):
+        list1 = merged.pop()
+        list2 = lists[i]
+        merged.append(merge_two_lists(list1, list2))
 
-    head = ListNode()
-    current = head
-    while min_heap:
-        next = heapq.heappop(min_heap)
-        current.next = ListNode(next)
+    return merged.pop()
+    
+def merge_two_lists(list1, list2):
+    current1 = list1
+    current2 = list2
+    dummy = ListNode()
+    current = dummy
+    
+    while current1 and current2:
+        if current1.val < current2.val:
+            current.next = current1
+            current1 = current1.next
+        else:
+            current.next = current2
+            current2 = current2.next
         current = current.next
-	
-    return head.next
+    if current1:
+        current.next = current1
+    if current2:
+        current.next = current2
+    
+    return dummy.next
+
+# TC: O(n log k)
+# SC: O(k)
+# where k is the total number of lists and n is the total number of nodes across k lists
