@@ -11,12 +11,13 @@ def merge_k_lists(lists):
     if len(lists) == 0:
         return None
 
-    merged = [lists[0]]
-    for i in range(1, len(lists)):
-        list1 = merged.pop()
-        list2 = lists[i]
-        merged.append(merge_two_lists(list1, list2))
-
+    while len(lists) > 1:
+        merged = []
+        for i in range(0, len(lists), 2):
+            list1 = lists[i]
+            list2 = lists[i + 1] if i + 1 < len(lists) else None
+            merged.append(merge_two_lists(list1, list2))
+        lists = merged
     return merged.pop()
     
 def merge_two_lists(list1, list2):
