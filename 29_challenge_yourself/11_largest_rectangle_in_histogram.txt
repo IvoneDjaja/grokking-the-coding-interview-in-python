@@ -1,0 +1,49 @@
+    x
+  x x
+  0 1
+
+  x
+  x x
+  0 1
+
+  x x
+  x x
+  0 1
+
+
+      x x
+      x x
+  x x x x 
+  0 1 2 3
+
+stack
+0 2
+1 1
+2 3
+3 3
+
+maxArea 2, 3, 6, 4
+
+stack
+0 1
+1 1
+2 3
+3 3
+
+maxArea 3, 6, 3, 4
+
+def largest_rectangle_in_histogram(heights: list[int) -> int:
+	n = len(heights)
+	stack = []
+	maxArea = 0
+	for i in range(n + 1):
+		while stack and (i == n or heights[stack[-1]] > heights[i]):
+			prev = stack.pop()
+			height = heights[i]
+			width = i if not stack else i - stack[-1] - 1
+			maxArea = max(maxArea, height * width)
+		stack.append(i)
+
+	return maxArea
+		
+	
