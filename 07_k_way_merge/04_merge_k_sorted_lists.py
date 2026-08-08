@@ -8,8 +8,10 @@ class ListNode:
 import heapq
 
 def merge_k_lists(lists):
-    if len(lists) == 0:
+    if not lists:
         return None
+    if len(lists) == 1:
+        return lists[0]
 
     while len(lists) > 1:
         merged = []
