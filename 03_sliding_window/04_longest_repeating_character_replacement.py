@@ -1,4 +1,4 @@
-def longest_repeating_character_replacement(s, k):
+def longest_repeating_character_replacement(s: list[str], k: int) -> int:
 	char_map = {}
 	start = 0
 	max_length = 0
@@ -8,11 +8,12 @@ def longest_repeating_character_replacement(s, k):
 		char = s[i]
 		count = char_map.get(char, 0)
 		char_map[char] = count + 1
-		while s[start] != s[i] and i - start > k:
+		while i + 1 - char_map[s[start]] - start > k:
 			char_map[s[start]] -= 1
 			start += 1
 		max_length = max(max_length, i + 1 - start)
 	return max_length
+
 
 input1 = 'ABBBCD'
 k1 = 3
