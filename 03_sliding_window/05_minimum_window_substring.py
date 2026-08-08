@@ -10,7 +10,7 @@ def min_window(s: str, t: str) -> str:
     t_count = 0
 
     for char in t:
-        count = t_map.get(t, 0) + 1
+        count = t_map.get(char, 0) + 1
         t_map[char] = count
 
     n = len(s)
@@ -19,13 +19,14 @@ def min_window(s: str, t: str) -> str:
         char = s[i]
         count = s_map.get(char, 0) + 1
         s_map[char] = count
-        if char in t_map and s_map[char] >= t_map[char]:
+        if char in t_map:
             t_count += 1
+        
         while t_count >= len(t):
             if s[start] in t_map and t_count == len(t):
                 break
             s_map[s[start]] -= 1
-            if char in t_map:
+            if s[start] in t_map:
                 t_count -= 1
             start += 1
         if t_count == len(t) and min_length > i + 1 - start:
@@ -37,3 +38,7 @@ def min_window(s: str, t: str) -> str:
 s1 = 'cbac'
 t1 = 'ac'
 print(min_window(s1, t1))
+
+s2 = 'aab'
+t2 = 'ab'
+print(min_window(s2, t2))
