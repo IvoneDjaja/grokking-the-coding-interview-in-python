@@ -1,0 +1,32 @@
+input1 = 'abca'
+input2 = 'aaaa'
+input2 = 'abcbcad'
+input3 = ''
+
+input2 = 'abcbcad'
+
+letter_map
+a: 1
+b: 1
+c: 1
+d: 1
+
+i: 0, 1, 2, 3, 4, 5
+start: 0, 2, 3, 
+
+maxLength: 1, 2, 3, 2
+
+def longest_substring_without_repeating_characters(input_str: list[str]) -> int:
+	letter_map = {}
+	start = 0
+	max_length = 0
+	for i in range(len(input_str)):
+		letter = input_str[i]
+		if letter not in letter_map:
+			letter_map[letter] = 0
+		letter_map[letter] += 1
+		while letter_map[letter] > 1:
+			letter_map[start] -= 1
+			start += 1
+		max_length = max(max_length, i + 1 - start)
+	return max_length
