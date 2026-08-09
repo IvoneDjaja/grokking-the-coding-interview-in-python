@@ -9,7 +9,7 @@ def validateBst(root: TreeNode) -> bool:
     def dfs(root: TreeNode, minVal: int, maxVal: int):
         if root is None:
             return True
-        if root.val < minVal or root.val > maxVal:
+        if root.val <= minVal or root.val >= maxVal:
             return False
         return dfs(root.left, minVal, root.val) and dfs(root.right, root.val, maxVal)
 
