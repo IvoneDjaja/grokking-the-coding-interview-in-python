@@ -6,17 +6,11 @@ class TreeNode:
 
 
 def good_nodes(root: TreeNode) -> int:
-    count = 0
     def dfs(root, max_val):
-        nonlocal count
         if root is None:
-            return	
-        if root.val >= max_val:
-            count += 1
-
+            return	0
+        is_good = 1 if root.val >= max_val else 0
         max_val = max(max_val, root.val)
-        dfs(root.left, max_val)
-        dfs(root.right, max_val)
+        return is_good + dfs(root.left, max_val) + dfs(root.right, max_val)
 
-    dfs(root, root.val)
-    return count
+    return dfs(root, float('-inf'))
