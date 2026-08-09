@@ -1,10 +1,16 @@
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+
 def is_subtree(root, subroot):
     if is_same_tree(root, subroot):
         return True
-    is_left_subtree = is_subtree(root.left, subroot.left)
-    is_right_subtree = is_subtree(root.right, subroot.right)
+    is_left_subtree = is_subtree(root.left, subroot) if root.left else False
+    is_right_subtree = is_subtree(root.right, subroot) if root.right else False
     
-    return is_left_subtree and is_right_subtree
+    return is_left_subtree or is_right_subtree
 
 def is_same_tree(root, subroot):
     if not root and not subroot:
