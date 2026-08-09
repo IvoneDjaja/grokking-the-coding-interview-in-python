@@ -1,0 +1,19 @@
+def kSmallestIntegerInBst(root: TreeNode, k: int) -> int:
+
+	count = 0
+	
+	def dfs(root: TreeNode):
+		nonlocal count
+		if root is None:
+			return
+
+		if root.left:
+			kSmallestIntegerInBst(root.left, k)
+		count += 1
+		if count == k:
+			return root
+		if root.right:
+			kSmallestIntegerInBst(root.right, k)
+	
+	dfs(root)
+	return count
