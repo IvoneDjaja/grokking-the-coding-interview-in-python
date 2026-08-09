@@ -1,0 +1,14 @@
+def get_binary_tree_diameter(root: TreeNode) -> int:
+	_, max_diameter = get_height(root, max_diameter)
+	return max_diameter
+
+def get_height(root: TreeNode, diameter: int) -> list[int]:
+    if not root:
+        return 0, 0
+    if not root.left and not root.right:
+        return 1, 1
+    left = get_binary_tree_diameter(root.left)
+    right = get_binary_tree_diameter(root.right)
+    diameter = left[0] + right[0]
+    max_diameter = max(max_diameter, left[1], right[1], diameter)
+    return 1 + max(left[0], right[0]), max_diameter
