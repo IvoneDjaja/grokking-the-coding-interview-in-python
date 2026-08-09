@@ -25,9 +25,10 @@ def deserialize(stream: list[int]) -> TreeNode:
 
     def dfs():
         nonlocal index
-        if index >= len(stream):
-            return None
-        node = TreeNode(list[index])
+        if index >= len(stream) or stream[index] is None:
+            index += 1
+            return
+        node = TreeNode(stream[index])
         index += 1
         node.left = dfs()
         node.right = dfs()
