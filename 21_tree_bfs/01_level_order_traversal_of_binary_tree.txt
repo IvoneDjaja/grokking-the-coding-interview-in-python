@@ -1,0 +1,18 @@
+def level_order(root: TreeNode) -> list[int]:
+	queue = []
+	levels = []
+	if root:
+		queue.append(root)
+	while len(queue) > 0:
+		n = len(queue)
+		level = []
+		for i in range(n):
+			current = queue.pop()
+			level.append(current.data)
+			if current.left:
+				queue.append(current.left)
+			if current.right:
+				queue.append(current.right)
+		levels.append(level.copy())
+
+	return levels
