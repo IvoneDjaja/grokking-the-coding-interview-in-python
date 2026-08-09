@@ -8,10 +8,11 @@ class TreeNode:
 
 
 def buildBinaryTree(preorder: list[int], inorder: list[int]) -> int:
-    inorderMap = {}
-    preorderIndex = 0
     if not preorder or not inorder:
         return None
+
+    inorderMap = {val: i for val, i in enumerate(inorder)}
+    preorderIndex = 0
 
     for i in range(len(inorder)):
         num = inorder[i]
