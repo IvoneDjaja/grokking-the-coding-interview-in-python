@@ -8,23 +8,25 @@ class TreeNode:
 
 
 def buildBinaryTree(preorder: list[int], inorder: list[int]) -> int:
-	inorderMap = {}
-	preorder = deque([preorder])
-	if not preorder or not inorder:
-		return None
+    inorderMap = {}
+    preorderIndex = 0
+    if not preorder or not inorder:
+        return None
 
-	for i in range(len(inorder)):
-		num = inorder[i]
-		inorderMap[num] = i
+    for i in range(len(inorder)):
+        num = inorder[i]
+        inorderMap[num] = i
 
-	def dfs(start, end):
-		if start >= end:
-			return None
-		preorderVal = preorder.popleft()
-		node = TreeNode(preorderVal)
-		mid = inorderMap[preorderVal]
-		node.left = dfs(start, mid)
-		node.right = dfs(mid + 1, end)
-		return node
+    def dfs(start, end):
+        nonlocal preorderIndex
+        if start >= end:
+            return None
+        preorderVal = preorder[preorderIndex]
+        preorderIndex += 1
+        node = TreeNode(preorderVal)
+        mid = inorderMap[preorderVal]
+        node.left = dfs(start, mid)
+        node.right = dfs(mid + 1, end)
+        return node
 
-	return dfs(0, len(preorder))
+    return dfs(0, len(preorder))
