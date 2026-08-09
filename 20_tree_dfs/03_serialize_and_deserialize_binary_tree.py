@@ -6,29 +6,30 @@ class TreeNode:
 
 def serialize(root: TreeNode) -> list[int]:
     if not root:
-        return []
+        return ''
     stream = []
     def dfs(root: TreeNode) -> list[int]:
         if not root:
-            stream.append(None)
+            stream.append('None')
             return
-        stream.append(root.val)
+        stream.append(str(root.val))
         dfs(root.left)
         dfs(root.right)
-    dfs(root)		
-    return stream
+    dfs(root)
+    return ','.join(stream)
 
-def deserialize(stream: list[int]) -> TreeNode:
-    if not stream:
+def deserialize(data: str) -> TreeNode:
+    if data == '':
         return None
+    stream = data.split(',')
     index = 0
 
     def dfs():
         nonlocal index
-        if index >= len(stream) or stream[index] is None:
+        if index >= len(stream) or stream[index] == 'None':
             index += 1
             return
-        node = TreeNode(stream[index])
+        node = TreeNode(int(stream[index]))
         index += 1
         node.left = dfs()
         node.right = dfs()
