@@ -1,0 +1,16 @@
+def maxPathSum(root: TreeNode) -> int:
+	maxPathSum = 0
+
+	def dfs(root):
+		nonlocal maxPathSum
+		if root is None:
+			return 0
+		
+		pathSum = root.val
+    leftPathSum = dfs(root.left, pathSum)
+    rightPathSum = dfs(root.right, pathSum)
+		maxPathSum = max(maxPathSum, pathSum, pathSum )
+		return pathSum
+
+	dfs(root, 0)
+	return maxPathSum
