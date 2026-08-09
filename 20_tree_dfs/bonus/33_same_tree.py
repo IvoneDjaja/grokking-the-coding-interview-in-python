@@ -7,11 +7,8 @@ class TreeNode:
 def same_binary_tree(root1: TreeNode, root2: TreeNode) -> TreeNode:
 	if not root1 and not root2:
 		return True
-	if not root1 and root2:
+	if not root1 or not root2:
 		return False
-	if not root2 and root1:
-		return False
-
 	if root1.data != root2.data:
 		return False
 
