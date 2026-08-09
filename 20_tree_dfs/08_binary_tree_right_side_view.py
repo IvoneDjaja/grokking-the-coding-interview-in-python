@@ -1,0 +1,13 @@
+def level_order(root):
+    result = []
+    def dfs(root, depth):
+        if not root:
+            return
+
+        if depth == len(result):
+            result.append(root.val)
+        dfs(root.right, depth + 1)
+        dfs(root.left, depth + 1)
+
+    dfs(root, 0)
+    return result
