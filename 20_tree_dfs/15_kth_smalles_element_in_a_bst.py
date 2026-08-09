@@ -9,21 +9,20 @@ class TreeNode:
 
 def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
         count = 0
-        val = 0
+        val = None
 
         def dfs(root: TreeNode):
             nonlocal count
             nonlocal val
-            if root is None:
+            if root is None or val:
                 return
 
-            if root.left:
-                dfs(root.left)
+            dfs(root.left)
             count += 1
             if count == k:
                 val = root.val
                 return
-            if root.right:
+            if val:
                 dfs(root.right)
 
         dfs(root)
