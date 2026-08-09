@@ -5,16 +5,17 @@ class TreeNode:
         self.right = None
 
 def diameter_of_binary_tree(root):
-  result = dfs(root)
-  return result[1]
+    max_diameter = 0
   
-def dfs(root):
-  if not root:
-    return [0, 0]
-  if not root.left and not root.right:
-    return [1, 0]
-  leftResult = dfs(root.left)
-  rightResult = dfs(root.right)
-  diameter = leftResult[0] + rightResult[0]
-  max_diameter = max(diameter, leftResult[1], rightResult[1])
-  return [1 + max(leftResult[0], rightResult[0]), max_diameter]
+    def dfs(root):
+        nonlocal max_diameter
+        if not root:
+            return  0
+        left_height = dfs(root.left)
+        right_height = dfs(root.right)
+        diameter = left_height + right_height
+        max_diameter = max(max_diameter, diameter)
+        return 1 + max(left_height, right_height)
+
+    dfs(root)
+    return max_diameter
