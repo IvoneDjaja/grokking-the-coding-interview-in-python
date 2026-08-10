@@ -12,4 +12,4 @@ def canPartition(nums: List[int]) -> bool:
         for j in range(target, num-1, -1):
             dp[j] = dp[j] or dp[j - num]
 
-    return dp[num]
+    return dp[target]
