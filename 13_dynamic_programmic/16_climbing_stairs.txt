@@ -1,0 +1,11 @@
+def climb_stairs(nums):
+    n = len(nums)
+    memo = (n + 1) * [0]
+    memo[1] = 1
+    memo[2] = 2
+    for i in range(2, n):
+        if memo[i - 1] + 1 == i:
+            memo[i] += memo[i - 1]
+        if memo[i - 2] + 2 == i:
+                memo[i] += memo[i - 2]
+    return memo[-1]	
