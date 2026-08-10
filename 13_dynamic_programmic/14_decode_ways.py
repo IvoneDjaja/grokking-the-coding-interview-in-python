@@ -6,8 +6,8 @@ def decodeWays(s: str) -> int:
     memo = (n + 1) * [0]
     memo[0] = 1
     memo[1] = 1
-    for i in range(2, n):
-        singleDigit = int(s[i])
+    for i in range(2, n + 1):
+        singleDigit = int(s[i-1: i])
         if 1 <= singleDigit <= 9:
             memo[i] += memo[i - 1]
         doubleDigit = int(s[i-2: i])
