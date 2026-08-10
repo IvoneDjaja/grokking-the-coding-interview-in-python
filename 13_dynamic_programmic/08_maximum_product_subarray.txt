@@ -1,0 +1,8 @@
+def maximumProductSubarray(nums: List[int]) -> int:
+	n = len(nums)
+	result = 1
+	memo = (n + 1) * [1]
+
+	for i in range(n):
+		num = nums[i]
+		memo[i] = max(memo[i - 1] * num, result * num)
