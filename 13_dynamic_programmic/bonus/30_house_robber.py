@@ -9,7 +9,7 @@ def houseRobber(nums: List[int]) -> int:
 		return max(nums[0], nums[1])
 
 	first = nums[0]
-	second = nums[1]
+	second = max(nums[0], nums[1])
 	for i in range(2, n):
 		first, second = second, max(second, nums[i] + first)
 
