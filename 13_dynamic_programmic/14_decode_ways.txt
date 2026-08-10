@@ -1,0 +1,16 @@
+def decodeWays(s: str) -> int:
+	n = len(s)
+	numToCharMap = {}
+	for i in range(26):
+		numToCharMap[str(i + 1)] = chr(65 + i)
+
+	memo = (n+1) * [0]
+	for i in range(s):
+		if s[i] in numToCharMap:
+            memo[i + 1] = memo[i] + 1
+        if i > 0:
+            if s[i-1:i] in numToCharMap:
+                memo[i] += 1
+            else:
+                break
+    return memo[-1]
