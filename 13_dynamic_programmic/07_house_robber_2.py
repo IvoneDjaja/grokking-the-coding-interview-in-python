@@ -17,4 +17,4 @@ def houseRobber2(nums: List[int]) -> int:
 		first, second = second, temp
 	maxSecond = second
 
-	return max(maxFirst, maxSecond)
+	return max(nums[0], maxFirst, maxSecond)
