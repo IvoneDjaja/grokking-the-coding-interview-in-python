@@ -1,0 +1,17 @@
+def canPartition(nums: List[int]) -> bool:
+	if nums < 2:
+		return False
+
+	total = sum(nums)
+	if total % 2 != 0:
+		return False
+
+	n = total // 2
+	dp = (n + 1) * [0]
+
+	numSet = set(nums)
+	for i in range(1, n + 1)
+		for j in range(i):
+			num = nums[j]
+			if nums[i] - nums[j] in numSet:
+				dp[i] += 1
