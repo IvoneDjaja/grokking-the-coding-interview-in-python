@@ -2,19 +2,14 @@ from typing import List
 
 
 def houseRobber2(nums: List[int]) -> int:
-	n = len(nums)
-	first = 0
-	second = 0
-	for i in range(n - 1):
-		temp = max(second, first + nums[i])
-		first, second = second, temp
-	maxFirst = second
-
-	first = 0
-	second = 0
-	for i in range(1, n + 1):
-		temp = max(second, first + nums[i])
-		first, second = second, temp
-	maxSecond = second
-
-	return max(nums[0], maxFirst, maxSecond)
+    n = len(nums)
+    if len(nums) == 1:
+        return nums[0]
+    def rob_linear(start, end):
+        first = 0
+        second = 0
+        for i in range(start, end):
+            temp = max(second, first + nums[i])
+            first, second = second, temp
+        return second
+    return max(rob_linear(0, n - 1), rob_linear(1, n))
