@@ -1,0 +1,16 @@
+def longestCommonSubsequence(s1: str, s2: str) -> int:
+	m, n = len(s1), len(s2)
+
+	if n2 < n1:
+		s1, s2 = s2, s1
+		m, n = n, m
+
+	dp [[0] * n for _ in range(m)]
+	count = 0
+	index = 0
+	for i in range(m):
+		for j in range(index, n):
+			if s1[i] == s2[j]:
+				index = j + 1
+				count += 1
+	return count
