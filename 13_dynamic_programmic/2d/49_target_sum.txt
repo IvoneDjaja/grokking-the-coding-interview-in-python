@@ -1,0 +1,11 @@
+def target_sum(nums: List[int], target: int):
+	
+	def dfs(index, total):
+		num = nums[index]
+        if total == target:
+            return 1
+            if index >= len(nums):
+                return 0
+        return dfs(nums[index + 1], target + num) + dfs(-nums[index + 1], target - num)
+
+return dfs(nums[0], 0)
