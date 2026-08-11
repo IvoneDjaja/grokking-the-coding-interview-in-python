@@ -1,0 +1,29 @@
+def interleaving_string(s1: str, s2: str, s3: str) -> bool:
+	if len(s1) > len(s2):
+		s1, s2 = s2, s1
+	m = len(s1)
+	n = len(s2)
+
+	index_m = 0
+	count_m = 0
+	index_n = 0
+	count_n = 0
+
+	s1_map = set(s1)
+	s2_map = set(s2)
+
+	for index in range(len(s3)):
+		if s3[index] in s1_map:
+			if index >= index_m:
+				index_m = index
+				count_m += 1
+			else:
+				return False
+		elif s3[index] in s2_map:
+			if index >= index_m:
+				index_n = index
+				count_n += 1
+			else:
+				return False
+
+	return count_m == m and count_n == n
