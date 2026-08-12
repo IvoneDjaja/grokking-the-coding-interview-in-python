@@ -1,0 +1,27 @@
+def longest_increasing_path(matrix: List[List[int]]) -> int:
+	n = len(matrix[0])
+
+	memo = [[0] * n for _ in range(n)]
+
+	maxTotal = 0
+	length = 0
+	def dfs(i, j, total, count):
+		nonlocal maxTotal
+		nonlocal length
+		num = matrix[i][j]
+		if total + num < memo[i][j]:
+			return
+		maxTotal = max(maxTotal, total)
+		length = count
+		memo[i][j] = total + num
+		for neighbor in [(0, 1), (1, 0),(0, -1), (-1, 0)]:
+			row = neighbor[0]
+			col = neighbor[1]
+			if -1 < i + row < n and -1 < j + col < n:
+				dfs(i + row, j + col, total + num, count + 1)
+		
+		
+	for i in range(n):
+		for j in range(n):
+			dfs(0, 0, matrix[i][j], 0)
+	return length
