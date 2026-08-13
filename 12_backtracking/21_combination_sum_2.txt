@@ -1,0 +1,22 @@
+def combinationSum2(nums: List[int], target: int):
+	output = []
+
+	nums.sort()
+
+	def backtrack(start, combination, total):
+		if total > target:
+			return
+		if total == target:
+			output.append(combination.copy())
+			return
+			
+		for i in range(len(nums)):
+			if i > 1 and nums[i-1] == nums[i]:
+				continue
+			num = nums[i]
+			combination.append(num)
+			backtrack(start + 1, combination, total + num)
+			combination.pop()
+
+	backtrack(0, [], 0)
+	return output
