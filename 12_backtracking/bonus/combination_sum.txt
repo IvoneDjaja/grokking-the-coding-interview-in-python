@@ -1,0 +1,16 @@
+def combinationSum(nums: List[int], target: int):
+	output = []
+	
+	def backtrack(combination):
+		if sum(combination) > target:
+			return
+		if sum(combination) == target:
+			output.append(combination.copy())
+			return
+		for num in nums:
+			combination.append(num)
+			backtrack(combination)
+            combination.pop()	
+	
+	backtrack([])
+	return output
