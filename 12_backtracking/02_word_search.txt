@@ -1,0 +1,23 @@
+def wordSearch(board: List[List[str]], word: str) -> bool:
+	m = len(board)
+	n = len(board[0])
+
+	def backtrack(i, j, index):
+		if index == len(word):
+			return True
+		if i < 0 or j < 0 or i >= m and j >= n:
+			return False
+		if board[i][j] != word[index]:
+			return False
+		for ni, nj in [(0,1), (-1,0), (0,1), (-1,0)]:
+			if backtrack(i + ni, j + nj, index + 1)
+				return True
+		return False
+			
+		
+	
+	for i in range(m):
+		for j in range(n):
+			if backtrack(i, j, 0)
+				return True
+	return False
