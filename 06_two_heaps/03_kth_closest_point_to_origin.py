@@ -8,7 +8,7 @@ def kthClosestPointsToOrigin(points, k):
 	n = len(minHeap)
 	output = []
 	while k > 0 and len(minHeap) > 0:
-		output.append(heapq.heappop(minHeap))
+		output.append(heapq.heappop(minHeap)[1])
 		k -= 1
 		
 	return output
