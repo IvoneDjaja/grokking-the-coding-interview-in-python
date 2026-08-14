@@ -24,14 +24,19 @@ def findWords(board: List[List[str]], words: List[str]) -> List[str]:
         char = board[i][j]
         if char not in node.charMap:
             return
-        if node.charMap[char].word:
-            output.append(node.charMap[char].word)
-            node.charMap[char].word = None
+        child = node.charMap[char]
+        if child.word:
+            output.append(child.word)
+            child.word = None
 
         visited.add((i,j))
         for ni, nj in [(0,-1),(1,0),(0,1),(-1,0)]:
-            dfs(i + ni, j + nj, node.charMap[char])
-        visited.remove((i,j))       
+            dfs(i + ni, j + nj, child)
+        visited.remove((i,j)) 
+
+        if not child.charMap:
+            node.charMap.remove(char)
+            
 
     for i in range(m):
         for j in range(n):
