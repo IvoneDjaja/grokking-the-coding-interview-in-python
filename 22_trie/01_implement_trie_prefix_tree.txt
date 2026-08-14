@@ -1,0 +1,39 @@
+class TrieNode:
+	def __init__(self):
+		self.charMap = {}
+		self.isEnd = False
+
+class PrefixTree:
+	def __init__(self):
+		self.node = TrieNode()
+	
+	def insert(self, word):
+		n = len(word)
+		current = node
+		for i in range(n):
+			char = word[i]
+			current.charMap[char] = TrieNode()
+			current = current.charMap[char]
+		current.isEnd = True
+
+	def search(self, word):
+		n = len(word)
+		current = None
+		for i in range(n):
+			char = word[i]
+			current = current.charMap[char]
+			if current is None:
+				return False
+			current = current.charMap[char]
+		return current.isEnd
+
+	def startsWith(self, prefix):
+		n = len(word)
+		current = None
+		for i in range(n):
+			char = word[i]
+			current = current.charMap[char]
+			if current is None:
+				return False
+			current = current.charMap[char]
+		return current is not None
