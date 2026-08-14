@@ -9,30 +9,24 @@ class PrefixTree:
         self.node = TrieNode()
 
     def insert(self, word: str) -> None:
-        n = len(word)
         current = self.node
-        for i in range(n):
-            char = word[i]
+        for char in word:
             if char not in current.charMap:
                 current.charMap[char] = TrieNode()
             current = current.charMap[char]
         current.isEnd = True
 
     def search(self, word: str) -> bool:
-        n = len(word)
         current = self.node
-        for i in range(n):
-            char = word[i]
+        for char in word:
             if char not in current.charMap:
                 return False
             current = current.charMap[char]
         return current.isEnd
         
     def startsWith(self, prefix: str) -> bool:
-        n = len(prefix)
         current = self.node
-        for i in range(n):
-            char = prefix[i]
+        for char in prefix:
             if char not in current.charMap:
                 return False
             current = current.charMap[char]
