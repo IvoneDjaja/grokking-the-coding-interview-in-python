@@ -1,0 +1,12 @@
+def lastStoneWeight(stones):
+	maxHeap = stones
+	heapq.heapfiy_max(maxHeap)
+
+	while len(maxHeap) > 1:
+		maxStone1 = heapq.heappop_max(maxHeap)
+		maxStone2 = heapq.heappop_max(maxHeap)
+		weight = abs(maxStone1 - maxStone2)
+		if weight > 0:
+			heapq.heappush_max(weight)
+
+	return maxHeap[0]
