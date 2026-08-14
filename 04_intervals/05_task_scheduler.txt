@@ -1,0 +1,21 @@
+def taskScheduler(tasks, n):
+	minStartHeap = []
+	taskStartMap = {}
+	time = 1
+	heapq.heapify(minStartHeap)
+	for task in tasks:
+		if task not in taskStartMap:
+			taskStartMap[task] = time
+		else:
+			prevTime = taskStartMap[task]
+			newTime = prevTime + n
+			taskStartMap[task] = newTime + 1
+		heapq.heappush(minStartHeap, (taskStartMap[task], task))
+		time += 1
+
+	time = 0
+	cycles = 0
+	while len(minStartHeap) > 0:
+		start = heapq.heappop(minStartHeap)
+		cycles += start - time
+		time = start
