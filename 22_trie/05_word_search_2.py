@@ -1,0 +1,65 @@
+class TrieNode:
+	def __init__(self):
+		self.charMap = {}
+		self.isEnd = False
+
+class WordDictionary:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def addWord(self, word):
+        current = self.root
+        for char in word:
+            if char not in current.charMap:
+                current.charMap[char] = TrieNode()
+            current = current.charMap[char]
+        current.isEnd = True
+
+    def search(self, word):
+        n = len(word)
+        def dfs(index, node):
+            if index == n:
+                return node.isEnd
+            if word[index] in node.charMap:
+                return dfs(index + 1, node.charMap[word[index]])
+            if word[index] == '.':
+                for key in node.charMap:
+                    if dfs(index + 1, node.charMap[key]):
+                        return True 		
+            return False
+        return dfs(0, self.root)
+
+
+class Solution:
+    def findWords(self, board, words):
+        n = len(board)
+        wordDict = WordDictionary()
+
+        maxLength = 0
+        for word in words:
+            maxLength = max(maxLength, len(word))
+            wordDict.addWord(word)
+
+        output = []
+        visited = set()
+
+        def dfs(i, j, path):
+            if i < 0 or j < 0 or i >= n or j >= n or (i,j) in visited or len(path) == maxLength:
+                return
+            path.append(board[i][j])
+            visited.add((i,j))
+            word = ''.join(path)
+            if wordDict.search(word):
+                output.append(word)
+            for ni, nj in [(0,-1), (-1,0), (0,1), (1,0)]:
+                dfs(i + ni, j + nj, path)
+
+            visited.remove((i,j))
+            path.pop()
+            
+        for i in range(n):
+            for j in range(n):
+                dfs(i, j, [])
+        return output
+
+        
