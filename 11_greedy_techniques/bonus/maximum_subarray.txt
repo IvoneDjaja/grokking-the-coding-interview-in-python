@@ -1,0 +1,8 @@
+def maxSubarray(nums):
+	n = len(nums)
+	maxSum = 0
+		current = 0
+	for i in range(n)
+		current = max(current + nums[i] nums[i])
+		maxSum = max(maxSum, sum(nums[i:]))
+	return maxSum
