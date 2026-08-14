@@ -1,0 +1,28 @@
+class MedianFinder:
+	def __init__(self):
+		self.minHeap = []
+		self.length = 0
+		heapq.heapify(minHeap)
+
+	def addNum(num):
+		heapq.heappush(minHeap, num)
+		self.length += 1
+
+	def findMedian():
+		n = self.length
+		if n % 2 == 0:
+			arr = []
+			for _ in range(n // 2):
+				arr.append(heapq.heappop(minHeap))
+			median = (arr[-1] + minHeap[0]) / 2
+			for num in arr:
+				heapq.heappush(minHeap)
+			return median
+		else:
+			arr = []
+			for _ in range(n // 2):
+				arr.append(heapq.heappop(minHeap))
+			median = minHeap[0]
+			for num in arr:
+				heapq.heappush(minHeap)
+			return median
