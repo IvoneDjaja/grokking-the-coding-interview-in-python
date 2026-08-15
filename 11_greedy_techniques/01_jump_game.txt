@@ -1,0 +1,9 @@
+def jump_game(nums):
+    n = len(nums)
+    for i in range(n):
+        num = nums[i]
+        jump = i + num
+        if jump < i:
+            return False
+        
+    return False
