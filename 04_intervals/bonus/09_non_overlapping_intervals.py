@@ -1,11 +1,10 @@
 def eraseOverlapIntervals(intervals: List[List[int]]) -> int:
-    intervals.sort()
-    stack = []
+    intervals.sort(key=lambda x: x[1])
     count = 0
-    for interval in intervals:
-        if stack and stack[-1][1] > interval[0]:
+    prevEnd = intervals[0][1]
+    for i in range(1, len(intervals)):
+        if intervals[i][0] < prevEnd:
             count += 1
-            stack[-1][-1] = min(stack[-1][-1], interval[1])
         else:
-            stack.append(interval)
+            prevEnd = intervals[i][1]
     return count
