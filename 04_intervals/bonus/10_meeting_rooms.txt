@@ -1,0 +1,6 @@
+def meetingRooms1(intervals):
+	intervals.sort()
+	for i in range(len(intervals)):
+		if i > 0 and intervals[i-1][1] > intervals[i][0]:
+			return False
+	return True
