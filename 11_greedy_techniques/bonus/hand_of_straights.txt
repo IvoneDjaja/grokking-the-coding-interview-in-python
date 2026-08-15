@@ -1,0 +1,18 @@
+def handOfStraights(hand, groupSize):
+	   counter = Counter(hand)
+        
+        for num in hand:
+            startNum = num
+            while counter[startNum - 1] > 0:
+                startNum -= 1
+                
+            while startNum <= num:
+                card_count = counter[startNum]
+                if card_count > 0:
+                    for i in range(groupSize):
+                        target = startNum + i
+                        if counter[target] < card_count:
+                            return False
+                        counter[target] -= card_count
+                startNum += 1
+        return True
