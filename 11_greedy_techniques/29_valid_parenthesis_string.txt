@@ -1,0 +1,13 @@
+def checkValidString(s):
+	minParentheses = 0
+	maxParentheses = 0
+	for i in range(len(s)):
+		if s[i] == '(':
+			minParentheses += 1
+			maxParentheses += 1
+		if s[i] == '*':
+			maxParentheses += 1
+		if s[i] == ')':
+			minParentheses -= 1
+            maxParentheses -= 1
+	return minParentheses == 0 or maxParentheses == 0
