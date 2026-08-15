@@ -1,0 +1,11 @@
+def divideArrayIntoIncreasingSubsequences(nums, k):
+	n = len(nums)
+	maxCount = 0
+	count = 0
+	for i in range(len(nums)):
+		if i > 0 and nums[i] == nums[i-1]:
+			count += 1
+			maxCount = max(maxCount, count)
+		else:
+			count = 1
+	return maxCount * k <= n
