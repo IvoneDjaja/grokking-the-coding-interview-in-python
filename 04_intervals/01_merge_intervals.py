@@ -1,0 +1,12 @@
+def merge(intervals: List[List[int]]) -> List[List[int]]:
+    intervals.sort()
+    stack = []
+    for interval in intervals:
+        new = interval
+        while stack and stack[-1][1] >= interval[0]:
+            prev = stack.pop()
+            new[0] = min(prev[0], new[0])
+            new[1] = max(prev[1], new[1])
+
+        stack.append(new)
+    return stack
