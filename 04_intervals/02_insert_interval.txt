@@ -1,0 +1,23 @@
+def insertInterval(intervals, newInterval):
+    if len(intervals) == 0:
+        return newInterval
+    startInterval = intervals.first
+    endInterval = intervals.last
+    if newInterval.last < startInterval.first:
+        intervals.insert(0, newInterval)
+    elif endInterval.last < newInterval.first:
+        intervals.append(newInterval)
+    else:
+        beforeInterval = []
+        middleInterval = []
+        afterInterval = []
+        for i in range(len(intervals)):
+            interval = intervals[i]
+            if interval.last < newInterval.start:
+                beforeInterval.append(interval)
+            elif interval.start > newInterval.end:
+                afterInterval.append(interval)
+            else:
+                middleInterval.append(interval)
+        intervals = beforeInterval + [min(middleInterval.first.first, newInterval.first), max(middleInterval.last.last, newInterval.last] + afterInterval
+    return intervals
