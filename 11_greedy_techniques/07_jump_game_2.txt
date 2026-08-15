@@ -1,0 +1,9 @@
+def jump(nums: List[int]) -> int:
+        n = len(nums)
+        memo = n * [float('inf')]
+        memo[0] = 0
+        for i in range(n - 1):
+            maxRange = i + nums[i] + 1
+            for j in range(i + 1, min(n, maxRange)):
+                memo[j] = min(memo[j], memo[i] + 1)
+        return memo[-1]
