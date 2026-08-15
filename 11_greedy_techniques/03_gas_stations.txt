@@ -1,0 +1,10 @@
+def gasStations(gas, costs):
+	n = len(gas)
+	totalGas = 0
+	startIndex = 0
+	for i in range(n):
+		totalGas = gas[i] - costs[i]
+		if totalGas < 0:
+			startIndex = i + 1
+			totalGas = 0
+	return startIndex
